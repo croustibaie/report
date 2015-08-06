@@ -1,0 +1,153 @@
+\documentclass[english]{enstaPRE}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Pour compiler il suffit de faire make dans le dossier
+%
+% Pour faire tourner ce latex il faut remplir tous les champs 
+% suivants.
+%
+% Pour remplir l'index au fur et à mesure, mettre \index{mot}. La 
+% commande \id{mot} vous permet d'afficher le mot et de l'indexer
+% en même temps
+%
+% Pour remplir le glossaire remplir le fichier glossary.tex (ou un 
+% autre, il suffit de changer le nom dans la commande \glossaire), 
+% puis de mettre \gls{label} au fur et à mesure de votre texte pour 
+% les mots complets, \acrshort{label} pour les acronymes (seuls ces
+% mots là seront intégrés à votre glossaire final, le glossary.tex 
+% vous sert de dictionnaire). Vous pouvez aussi utiliser la version 
+% plurielle de votre mot avec \glspl{label}. Vous pouvez mettre la 
+% première lettre en majuscule en mettant le G en majuscule. Enfin
+% vous pouvez utiliser \glslink{label}{text} pour mettre un texte 
+% de remplacement
+%
+% Pour ajouter un mot à la fois dans le glossaire et dans l'index
+% il suffit d'utiliser la fonction \gl{label} pour un mot, 
+% \ac{label} pour un acronyme. Les fonctions \Gl, \glp, \Glp et 
+% \gll fonctionnent comme précédement.
+% 
+% Pour remplir la bibliographie, remplir le fichier biblio.bib (ou
+% un autre, il suffit de changer le nom dans la commande 
+% \bibliographie. Pour citer une source, mettre \cite{text} (seuls
+% les textes cités seront ajoutés à la bibliographie, le biblio.bib
+% vous sert de bibliothèque)
+%
+% Il suffit de mettre la langue souhaitée dans les options de la 
+% classe sur la première ligne (francais|english)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\logo{uci.jpeg}
+\specialite{SIS/TIC}
+\annees{2014-2015}
+\titre{Ton titre ici}
+\soustitre{Ton sous-titre ici}
+\illustration{illustration.jpg}
+\confidentialite{Non-confidential report and publishable on Internet}
+\auteur{Thomas Bourguenolle}
+\promotion{2016}
+\tuteurENSTA{Doctor Levy-dit-vehel}
+\tuteurOrganisme{Doctor Per Larsen}
+\dateDebut{June 6th 2015}
+\dateFin{August 28th 2015}
+\organisme{Systems Software and Security Lab}
+\adresseOrganisme{University of California, Irvine}
+
+\glossaire{glossary}
+
+\begin{document}
+
+\couverture
+
+\pageConfidentialite{This present document is not confidential. It can be communicated outside in
+paper format or distributed in electronic format.}
+
+\partb{Abstract}
+Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+
+\partb{Acknowledgment}
+Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+
+\tableofcontents
+
+\partb{Introduction}
+Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+
+\part{Chapter 1}
+The first chapter is an overview of the history of code injection based attacks and an introduction to Multi Variant Execution Environnments.
+
+\section{Smashing the stack for decades of research}
+In 1996, the paper Smashing the stack for fun and profit was released after a few months of buffer overflow attacks.
+The idea is to exploit the lack of boundary checking while giving the user the opportunity to write a buffer.
+Thus, the attacker can write over the buffer and overwrite the memory that is over the buffer. 
+A classic way to exploit this is to write shellcode in the upper stack and then change the return address of the function
+to the beginning of the shellcode. A shellcode is a sequence of commands that result in the opening of a shell, usable by the user which
+would now have the access rights granted to the original program.\\
+\image{label}{Memory layout after a buffer overflow attack}{height=8cm}{buffer_overflow.jpg} \\
+
+To face this problem, many defense mechanisms have been created over the past two decades.
+
+\section{Address space layout randomization and XOR memory}
+Address space layout is a simple mechanism that is now enabled by default in any operating system. The idea is just to give the 
+program a different starting memory at every run. As a consequence, the attacker will have a hard time rewritting the return address since
+he cannot know anymore where his shellcode is located. 
+Nevertheless, the insertion of nop (no operation) instructions before the shellcode allow the attacker to inject a random 
+return address since he could have a high chance (depending of the number of mops) to land on a nop and ``slide'' to the shellcode.
+\\ \\
+Another mechanism that is also commonly used is Execute Or Read memory (XOR). In this configuration, every memory address is marked
+as either readable or executable. As a consequence, shellcode won't be executed since it is very unlikely that all of the shellcode
+area is marked as executable.
+Even though this technique seems extremely efficient, attackers have been extremely successful in bypassing this defense 
+and a lot of others.This is the reason why buffer overflows still rank as the third most dangerous attack in the CWE/SANS ranking.\\
+\image{label}{Nopslide technique}{height=8cm}{nopslide.jpg} \\
+
+\section{Return oriented programming}
+Inserting malicious code being impossible, the new attack model was based on reusing the already available and executable code present
+in the memory. \\ The Return into Libc attack, for example, consist in rewritting the return address to the beginning of a known
+executable memory in the libc library (such as the system function, which allows to spawn a new terminal). One may think that ASLR
+prevents the attacker from knowing the precise address of this function, but bruteforcing remains efficient on 32bits systems.
+Althought, pointer leakage is a way for the attacker to have an exact knowledge of the code layout, allowing him to perform such attacks.
+\\
+Another very popular attack is ROP (Return Oriented Programming). In this attack, the hacker will use the executable code available 
+by building a gadget. A gadget is simply some chunks of code put together to build a specific set of instruction (spawning a terminal).
+To do so, the attacker just needs to find instructions chunks ending with the ret instruction. The ret instruction jumps to the addressed
+referenced by a specific cache. Thus, the attacker will overflow this cache with the consecutive address he needs to jump to 
+(the hacker is hijacking the control flow).
+\\\image{label}{Building a gadget through ROP}{height=8cm}{ROP.png} \\
+
+
+
+\section{Exemple d'un tableau}
+\begin{tableau}{notation}{Notations}{|c|C{12cm}|}
+    \hline
+    Notation & Description \\
+    \hline
+    $x$ & Signal in the time domain \\
+    \hline
+    $X$ & Signal in the frequency domain (\ac{dft} of $x$) \\
+    \hline
+\end{tableau}
+
+\section{Exemple pour le glossaire, les acronymes et l'index}
+Le nom complet : \gl{dft} et juste l'acronyme \ac{dft}, ainsi que des ajouts juste dans l'\id{index}
+
+\section{Exemple de citation}
+\gl{ldpc} \cite{gallager1962low}, fountain codes \cite{byers1998digital,luby2002digital}, verification codes \cite{luby2002verification} etc.
+
+\partb{Conclusion}
+Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
+
+\bibliographie{biblio}
+
+\afficheGlossaire
+
+\afficheIndex
+
+\listedestables
+
+\listedesfigures
+
+\partb{Appendix}
+Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
+
+\end{document}
