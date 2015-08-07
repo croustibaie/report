@@ -3,3 +3,4 @@
 \contentsline {figure}{\numberline {I.1}{\ignorespaces Memory layout after a buffer overflow attack}}{13}{figure.1.1}
 \contentsline {figure}{\numberline {I.2}{\ignorespaces Nopslide technique}}{14}{figure.1.2}
 \contentsline {figure}{\numberline {I.3}{\ignorespaces Building a gadget through ROP}}{15}{figure.1.3}
+\contentsline {figure}{\numberline {I.4}{\ignorespaces Monitor the variants inside a MVEE}}{16}{figure.1.4}

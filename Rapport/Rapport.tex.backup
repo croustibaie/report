@@ -115,7 +115,15 @@ referenced by a specific cache. Thus, the attacker will overflow this cache with
 (the hacker is hijacking the control flow).
 \\\image{label}{Building a gadget through ROP}{height=8cm}{ROP.png} \\
 
+\section{Multi Variant Execution Environnment}
 
+In the MVEE threat model, we assume that the attacker has access to the source code, is able to read all of the memory layout through a leaking pointer and 
+is can successfully develop a gadget (see \id{Return oriented programming}).
+MVEEs consist in running various diversified variants of the same program in parallel. By this mean, if an attacker tries to developp
+a buffer overflow attack, this attack will only work on one variant. To do so, the MVEE makes sure that the data layout is 
+different in every variant. Then, at runtime, a monitor checks every system call done by the variants, if they are not the same
+calls or if the arguments differ, the monitor instantly stops every variant and produces a report. \\
+\image{label}{Monitor the variants inside a MVEE}{height=8cm}{MVEE.jpg} \\
 
 \section{Exemple d'un tableau}
 \begin{tableau}{notation}{Notations}{|c|C{12cm}|}

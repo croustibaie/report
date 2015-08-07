@@ -40,8 +40,8 @@
 \logo{uci.jpeg}
 \specialite{SIS/TIC}
 \annees{2014-2015}
-\titre{Ton titre ici}
-\soustitre{Ton sous-titre ici}
+\titre{Detecting address sensitivity in Multi Variant Execution Environnment (MVEE)}
+\soustitre{How to make real life programs compatible with MVEEs}
 \illustration{illustration.jpg}
 \confidentialite{Non-confidential report and publishable on Internet}
 \auteur{Thomas Bourguenolle}
@@ -119,7 +119,21 @@ referenced by a specific cache. Thus, the attacker will overflow this cache with
 
 In the MVEE threat model, we assume that the attacker has access to the source code, is able to read all of the memory layout through a leaking pointer and 
 is can successfully develop a gadget (see \id{Return oriented programming}).
-MVEEs consist in running various diversified variants of the same program in parallel.
+MVEEs consist in running various diversified variants of the same program in parallel. By this mean, if an attacker tries to developp
+a buffer overflow attack, this attack will only work on one variant. To do so, the MVEE makes sure that the data layout is 
+different in every variant. Then, at runtime, a monitor checks every system call done by the variants, if they are not the same
+calls or if the arguments differ, the monitor instantly stops every variant and produces a report. \\
+\image{label}{Monitor the variants inside a MVEE}{height=8cm}{MVEE.jpg} \\
+As you can see above, MVEEs induces a consequent time overhead for two reasons: First, the program is run multiple times. And second,
+variants have to wait for each other when they want to perform a system call (which of course, occurs a lot).
+However, experience proves that running a MVEE with 2 or 3 variants is still very intersting compared to other defense mechanisms 
+since it is probably one of the most powerful and is still pretty fast compared to other techniques such as control flow integrity.
+\\The implementation of a MVEE is a real challenge since a lot of programming issues have to be solved.
+First the number of system call is important and every single one may require a specific attention. If a pointer is given as an argument,
+the monitor should make sure that the contents are the same, if an output is created, only one variant should write and we need to 
+prevent the other variants from doing the same operation, etc. \\ IOCTLs system calls are also fascinating since there are hundreds 
+of them and only a small amount are documented (only 421 of them are documented in the ioctl\_list man page and this page informs 
+that this list is very incomplete). 
 
 \section{Exemple d'un tableau}
 \begin{tableau}{notation}{Notations}{|c|C{12cm}|}
