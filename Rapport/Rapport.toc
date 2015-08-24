@@ -1,18 +1,25 @@
 \select@language {english}
 \contentsline {chapter}{Confidentiality Notice}{3}{chapter*.1}
-\contentsline {chapter}{Abstract}{5}{chapter*.2}
-\contentsline {chapter}{Acknowledgment}{7}{chapter*.3}
+\contentsline {chapter}{Acknowledgment}{5}{chapter*.2}
+\contentsline {chapter}{Abstract}{7}{chapter*.3}
 \contentsline {chapter}{Contents}{9}{chapter*.4}
 \contentsline {chapter}{Introduction}{11}{chapter*.5}
-\contentsline {chapter}{\numberline {I}Chapter 1}{13}{chapter.1}
+\contentsline {chapter}{\numberline {I}Background Description}{13}{chapter.1}
 \contentsline {section}{\numberline {I.1}Smashing the stack for decades of research}{13}{section.1.1}
 \contentsline {section}{\numberline {I.2}Address space layout randomization and XOR memory}{14}{section.1.2}
 \contentsline {section}{\numberline {I.3}Return oriented programming}{14}{section.1.3}
 \contentsline {section}{\numberline {I.4}Multi Variant Execution Environnment}{15}{section.1.4}
-\contentsline {section}{\numberline {I.5}Exemple d'un tableau}{16}{section.1.5}
-\contentsline {section}{\numberline {I.6}Exemple pour le glossaire, les acronymes et l'index}{16}{section.1.6}
-\contentsline {section}{\numberline {I.7}Exemple de citation}{16}{section.1.7}
-\contentsline {chapter}{Conclusion}{17}{chapter*.6}
-\contentsline {chapter}{List of Tables}{19}{chapter*.7}
-\contentsline {chapter}{List of Figures}{21}{chapter*.8}
-\contentsline {chapter}{Appendix}{23}{chapter*.9}
+\contentsline {chapter}{\numberline {II}Investigating address sensitivity}{17}{chapter.2}
+\contentsline {section}{\numberline {II.1}A definition of address sensitivity}{17}{section.2.1}
+\contentsline {section}{\numberline {II.2}Use of uninitialized value}{17}{section.2.2}
+\contentsline {section}{\numberline {II.3}Treating pointer as integers}{18}{section.2.3}
+\contentsline {section}{\numberline {II.4}Writing a pointer or a padded structure}{18}{section.2.4}
+\contentsline {chapter}{\numberline {III}Tool development}{19}{chapter.3}
+\contentsline {section}{\numberline {III.1}The delta strategy}{19}{section.3.1}
+\contentsline {section}{\numberline {III.2}Abstraction and cast back occurence analysis}{20}{section.3.2}
+\contentsline {section}{\numberline {III.3}Taint checking}{21}{section.3.3}
+\contentsline {section}{\numberline {III.4}Function inserting tool}{22}{section.3.4}
+\contentsline {chapter}{Conclusion}{23}{chapter*.6}
+\contentsline {chapter}{List of Tables}{25}{chapter*.7}
+\contentsline {chapter}{List of Figures}{27}{chapter*.8}
+\contentsline {chapter}{Appendix}{29}{chapter*.9}
