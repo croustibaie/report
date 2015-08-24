@@ -1,0 +1,292 @@
+\documentclass{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{cleveref}
+\usepackage{authblk}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{url}
+\usepackage[toc,page]{appendix}
+%\usepackage[style=authoryear]{biblatex}
+
+\lstset{basicstyle=\ttfamily,captionpos=b}
+\crefname{appsec}{appendix}{appendices}
+
+\title{Address Sensitive Behaviors Causing Benign Divergence}
+\subtitle{CFAR Technical Report}
+\author[1]{Thomas Bourguenolle}
+\author[1]{David Poetzsch-Heffter}
+\author[2]{Stijn Volckaert}
+\author[1]{Per Larsen}
+\author[1]{Michael Franz}
+\affil[1]{UC Irvine, Department of Computer Science}
+\affil[2]{Ghent University, Department of Computer Science}
+
+\date{July 2015}
+
+\newcommand{\code}[1]{\lstinline{#1}}
+
+\begin{document}
+
+\maketitle
+
+\section{Motivation}
+Multi-variant execution environments (MVEEs) are one approach to improve software security \cite{DBLP:conf/eurosys/SalamatJGF09, volckaert2015cloning}.
+In a MVEE multiple diversified variants of the same program run in parallel.
+Any difference in behavior between those variants causes the MVEE to abort execution and report the divergence as a possible attack.
+
+Many typical diversifications change the data or code layout \cite{DBLP:journals/ieeesp/LarsenBF15}.
+Yet, low-level languages like C allow writing programs whose control flow or data values depend on this layout.
+These so-called address sensitive programs behave non-deterministically under code and data layout transformations.
+In a conventional, single-variant execution environment this behavior does not induce problems or is even intended (e.g. for introducing randomness).
+However, when run in a MVEE, address sensitivity makes the variants diverge resulting in false positives.
+
+In order to make MVEEs compatible with real-world programs, address sensitive behaviors need to be dealt with. 
+As a prior step, this report focuses on giving an overview over existing problematic paradigms.
+For that, we grouped address sensitive behaviors found in C programs into different categories.
+Each category comes with a detailed description of the problem in relation to MVEEs and references actual programs that show this behavior.
+We also give a first indication of the prevalence of the categories in real-world programs and propose approaches to solutions for the individual problems.
+
+\section{Categories of address sensitive behaviors}
+
+To get a better understanding of address sensitive behaviors we tested various C/C++ programs in a multi-variant execution environment.
+While most of the linux core utils worked fine, the libX11 and gtk libraries were consequent sources of address sensitivity.
+Refer to \cref{app:testedprograms} for a complete list of tested programs.
+We also created a git repository\footnote{\code{https://github.com/dpoetzsch/asb-examples}} containing minimal examples that resemble the problematic behavior of each category.
+
+The experiments were carried out using GHUMVEE, which is the most fully featured academic MVEE currently available \cite{volckaert2015cloning}.
+The test subjects were compiled using gcc4.8 with the default debug configuration on an Ubuntu 14.04 amd64 system.
+During the tests we used Address Space Layout Randomization (ASLR, \cite{ASLR}) as a diversification.
+
+In the following, each identified category of address sensitive behavior, is described in detail.
+
+\subsection{Use of unintialized value}
+\label{sec:uninitializedvalue}
+
+Common C compilers return the contents of the associated memory cell if an uninitialized variable is used.
+This value can not be predicted in general and thus creates a source of randomness.
+In a MVEE this can result in an argument or a syscall mismatch if the control flow of the program depends on the uninitialized value.
+
+Even though the behavior is highly implementation specific (and even undefined in the investigated case) the glibc library seems to apply this idiom on purpose:
+In the \code{__gen_tempname()} function (\code{tempname.c:229}), the variable \code{static uint64_t value} (line 233) is not initialized and is then used to generate a random temporary file name.
+The memory at this stack address will almost always be different from one variant to another if ASLR is enabled for instance.
+Later on, an open syscall with the random file name will trigger an argument mismatch.
+In another context, one could easily imagine a situation in wich the control flow would be determined by this variable's value and a syscall mismatch would be triggered.
+
+The error could also occur without any data layout diversification but it is less likely since the memory at the variable's address would probably be the same for both variants (due to a recent stack memory free).
+
+It is also worth noting that a similar behavior can result from the use-after-free idiom.
+
+\subsection{Treating pointers as integers}
+\label{sec:pointersasintegers}
+
+Although it is implementation-defined behavior in C, casting pointers to integers is a common practice \cite{DBLP:conf/asplos/ChisnallRWWVMRD15}. 
+A frequent example of this idiom is the use of pointer values as hash keys since it is an easy way to make sure every key is unique.
+With ASLR enabled, the pointer values being different, one of the hashes could result in a collision and the hashtable would have to be resized while the other variant's would not (see \cref{tab:hashdiv}).
+The control flow would diverge, later resulting in a syscall mismatch (most likely \code{sys_brk} vs.\ any other syscall).
+Since we can not predict when a table resize might occur, these mismatches happen randomly.
+For instance, \code{xchat_gnome} uses the \code{HashMgr::add_word()} function to hash objects by using the pointer value (call to \code{store_pointer()}).
+The resulting error is a syscall mismatch \code{sys_brk} vs.\ \code{sys_read} that does not occur at every run. Other known occurences of pointer hashing are:
+\begin{description}
+ \item[Glibc] \code{G_direct_hash()} in \code{gutils.c:2093}
+ \item[Libgtk+2.0] \code{gtk_rc_styles_hash()} in \code{gtkrc.c:1967} and \code{gtk_gc_value_hash()} in \code{gtkgc.c:282}
+ \item[libhunspell] \code{HashMgr::add\_word()} in \code{hashmgr.cxx:168}
+\end{description}
+
+\begin{table}[t]
+ \centering
+ \def\arraystretch{1.5}
+ \begin{tabular}{c|c}
+ Variant 1 & Variant 2 \\\hline
+ Hashing 0xffffffff &  Hashing 0xdddddddd \\
+ Hash result = no collision & Hash result= Collision \\
+  \multicolumn{2}{c}{Diverging Behavior}\\
+\end{tabular}
+\caption{Example of a control flow divergence during a pointer hashing}
+\label{tab:hashdiv}
+\end{table}
+
+\begin{figure}[t, centering]
+ \centerline{\includegraphics[width=0.65\textwidth]{RoundUpMemory}}
+ \caption{Rounding to 2 in diverse variants}
+ \label{fig:rounding}
+\end{figure}
+Other pointer values computation could be address sensitive.
+LLVM's data flow sanitizer for example, massively uses the \code{uptr} type which is the integer representation of a pointer.
+Address sensitivity was found in the \code{FastPoisonShadow} function in \code{asan_poisoning.h:39}.
+This function is part of the memory poisoning process and reserves the memory that will be poisoned.
+While doing so, the lowest memory address is rounded up to the page size and the upper one is rounded down.
+In \cref{fig:rounding}, the rounding only affects variant 1 while variant 2 remains the same, creating a divergence.
+The size of the required space is later given as an argument to a \code{map} syscall, resulting in an argument mismatch in the MVEE.
+
+As similar strategy is found in the implementation of \code{ptmalloc2} which is the default memory allocator in GNU libc.
+This function requires that all of its arenas (i.e.\ heaps) are aligned to a specific boundary.
+To ensure that, \code{ptmalloc2} allocates a larger than neccessary region and unmaps the lower and upper parts to reach the desired alignment.
+The size of the memory to unmap being most probably different, this may result in an argument mismatch during the unmap system
+call.
+So far, the solution adopted by GHUMVEE is to detect these malloc calls and to temporarily allow this diverging syscall pattern.
+% TODO maybe a sentence about how this affects the MVEE
+% TODO Stijn's solution for rounding
+
+\subsection{Pointer in binary data written using a syscall like \code{writev}}
+\label{sec:pointerwritten}
+
+With layout diversification like ASLR the pointer values change each single run of a program.
+Thus, in a MVEE each variant will have different pointer values and writing those pointers results in an argument mismatch.
+
+Many X11 programs like \code{xpdf}, \code{xedit}, \code{xpaint}, ... show that behavior.
+We inspected \code{xpdf} in detail.
+\code{xpdf} uses a library that writes pointers to GUI handler functions into a display buffer which at some point is written out using the syscall \code{writev}.
+
+To be precise, we only found out that the two variants write those pointers into the display buffer and that, at a later point, the program crashes because of a divergence in the display buffer.
+We did not check, if the divergence that we found is actually the divergence that makes it crash (there could be more and the one that we found could even be overwritten before the crash).
+Our best guess is that most widget creations induce divergences in the display buffer and that we only inspected the very first one after the start of the program.
+However, it seems likely that all divergences are caused by the same address sensitive problem (pointers in the display buffer).
+
+Please refer to \cref{app:dpybuffer} for the technical details on the creation of the inspected divergence in the display buffer.
+
+To get an idea of the extend of the investigated problem we performed a simple \code{grep} over the sources of the packages \code{motif}, \code{libX11}, \code{libXaw}, \code{libxcb}, \code{libXt} and \code{x11-apps}:
+
+\begin{lstlisting}
+$ find . -name *.[hc] -exec grep 'XtSetArg(' {} + \
+      | grep '&' | wc -l
+\end{lstlisting}
+
+The results show that there is at least 1157 calls to \code{XtSetArg} (the root of the inspected divergence) with a pointer value.
+This does not even include the function pointers as the inspected libraries do not use the address-of operator for getting the function pointers.
+It seems that a fix for function pointers alone does not suffice to fix the problem.
+
+\subsection{Writing a padded structure}
+\label{sec:paddedstruct}
+
+One may be tempted to write a whole structure using \code{write(fd, struct_ptr, nbytes)} as in the \code{WriteTargetsTable()} function mentioned  in \cref{app:dpybuffer}.
+
+However, it is very likely that some padding bytes were added between the structure members due to data alignment.
+This happens if the total number of bytes required by the members $\neq 0\ (mod\ 4)$.
+If the structure is placed on the stack, these padding bytes will result in the exact same error as if an uninitialized value was used. 
+
+This problem is also unlikely to occur without any code or data layout diversification for the same reason as in the uninitialized value problem.
+\Cref{lst:padstruct} shows a snippet demonstrating this address sensitive behavior.\\
+
+\begin{lstlisting}[frame=single, caption=Writing a padded structure, label=lst:padstruct, language=C]
+struct padded_struct {
+    char ch1; // 1 byte
+	      // 3 padding bytes
+    int i1;   // 4 bytes on 64bits system
+    int i2;   // 4 bytes
+};
+
+int main(int argc, char *argv[]) {
+    struct padded_struct foo;
+    
+    foo.ch1 = 'a';
+    foo.i1 = 0;
+    foo.i2 = 1;
+    
+    printf("sizeof padded_struct is %ld\n", sizeof(foo)); 
+      /* sizeof padded_struct is 12 */
+    
+    write(2, &foo, sizeof(foo));
+      /* Argument mismatch triggered if ASLR is enabled */
+    return 0;
+}
+\end{lstlisting}
+
+The first way to fix this is to remove the padding bytes by adding the \code{__packed__} attribute to the structure.
+Another solution is to set the padding bytes to zero. A simple way to implement is to just use of \code{memset} after each declaration of the structure.
+It is clear that the adopted solution strongly depends on the program's architecture.
+Other implementations of this padding bytes zeroing could be investigated and may be even implemented in the compiler itself.
+Still, writing a structure will not be safe unless we make sure that no pointer values will be written (see previous category).
+
+\section{Detection tools}
+
+Address sensitivity sometimes results from bugs or hazardous coding.
+Such behaviors are often detectable at compilation or run time, given the right tool.
+We tried the following tools on our minimal examples of address sensitivity\footnote{\code{https://github.com/dpoetzsch/asb-examples}}:
+Valgrind, the \code{-Wall} flags of \code{gcc} and \code{clang}, and the LLVM sanitizers for addresses, memory and dataflow\footnote{\code{-fsanitize=address}, \code{-fsanitize=memory}, \code{-fsanitize=dataflow}}.
+
+As expected, the use of uninitialized values is detected by both \code{gcc}'s and \code{clang}'s \code{-Wuninitialized} option.
+But still, if an array or a structure was not initialized, \code{clang} would not detect it and \code{gcc} would report it only if optimizations were turned on.
+Valgrind remains the best way to detect uses of uninitialized variables at run time.
+
+Regarding structure padding, it appears that \code{gcc} fails at detecting the use of uninitialized memory.
+However, \code{clang}'s memory sanitizer detects it at runtime, just like valgrind would.
+
+We found no tools to detect the problems described in \cref{sec:pointersasintegers,sec:pointerwritten} since these idioms are generally not considered being hazardous.
+So far, manually debugging these kinds of address sensitive programs implies paying attention to every pointer to integer cast.
+Sometimes, the cast itself is responsible for the address sensitivity like in hashing functions (\code{gtk_gc_value()} or \code{g_direct_hash()}).
+The first functionnality of such an address sensitivity detection tool would be to detect every integer to pointer cast and then keep track of the casted variable uses.
+
+\section{Conclusion}
+
+We listed and categorized the adress sensitive behaviors that we encountered while running GHUMVEE.
+Especially pointer hashing and pointer writing seem to be a common cause of address sensitive behavior.
+It is worth noting that further research could still reveal other forms of address sensitivity.
+
+For uninitialized values and padded structures we discussed detection tools.
+Uninitialized values create highly implementation specific (and often even undefined) behavior.
+Also, they can easily be removed in the cases inspected.
+Thus, we think that it should be solved in the individual applications.
+For the problems related to padded structures we discussed solutions in \cref{sec:paddedstruct}.
+
+It remains to investigate solutions for the problems caused by written pointers and treating pointers as integers.
+For the latter problem, we are looking into an approach that creates a virtual address space that is shared between the variants.
+Whenever a pointer is cast into an integer, its value would be mapped into this address space.
+We are still investigating the implications of this approach, but it seems that under certain conditions it could solve the pointer hashing problem.
+
+\bibliographystyle{plain}
+\bibliography{address}
+
+\begin{appendices}
+\crefalias{section}{appsec}
+
+\section{List of tested programs}
+\label{app:testedprograms}
+\subsubsection*{Programs with no appearent address sensitivity}
+\lstinline{bash}, \lstinline{bzip2}, \lstinline{cat}, \lstinline{chmod}, \lstinline{cp}, \lstinline{date},
+\lstinline{df}, \lstinline{echo}, \lstinline{grep}, \lstinline{less}, \lstinline{ls}, \lstinline{ssh}
+
+\subsubsection*{Address sensitive programs and libraries}
+\begin{description}
+ \item[glibc] Uses an uninitialized value as a source of randomness and pointers as hash keys. See \cref{sec:uninitializedvalue,sec:pointersasintegers} for details.
+ \item[gnome-calculator] % TODO what happened?
+ \item[xchat-gnome] Non-deterministically \lstinline{xchat-gnome} shows different behavior.
+   One recurring problem is the use of pointers as hash keys as described in \cref{sec:pointersasintegers}.
+ \item[xpdf] Pointer values are written out using the syscall \lstinline{writev}. See \cref{sec:pointerwritten} for details.
+ \item[xedit] Shows similar problems as \lstinline{xpdf}.
+ \item[xpaint] Shows similar problems as \lstinline{xpdf}.
+ \item[gdb] % TODO ???
+\end{description}
+
+\section{Creation of a divergence in the display buffer}
+\label{app:dpybuffer}
+
+\Cref{tab:dpybuffer} shows the technical key steps of how the divergence in the display buffer that we inspected is created.
+The trace starts at the point when different pointers are written into data arrays.
+
+\begin{table}[ht]
+\centering
+\def\arraystretch{1.2}
+\begin{tabular}{l|l|p{0.6\linewidth}}
+ \# & Location & Explanation \\\hline
+ 1 & libXm, ScrolledW.c:1433 & A function pointer to a GUI handler is written into an \code{Arg} array using \code{XtSetArg}  \\\hline
+ 2 & libXm, ScrolledW.c:1437 & \code{XmDropSiteRegister} is called which will write the mentioned \code{Arg} array into the display buffer which will be passed to \code{writev} \\\hline
+ 3 & libXm, DropSMgr.c:3280 & Call \code{XtGetSubresources} with the \code{Arg} array and the \code{fullInfoRec} structure \\\hline
+ 4 & libXt, Resources.c:549 & Copy the data from the elements in the \code{Arg} array into the memory region that corresponds to the \code{import_targets} field of the \code{fullInfoRec} structure. There might also be a bug here, we found an offset by 2 for some reason. \\\hline
+ 5 & libXm, DropSMgr.c:3355 & Call \code{_XtTargetsToIndex} with the \code{fullInfoRec.import_targets} that now contain the function pointers from the \code{Arg} array \\\hline
+ 6 & libXm, DragBS.c:1393 & The \code{newTargets}, which are a copy of the previous \code{import_targets}, are appended to the \code{targetsTable} \\\hline
+ 7 & libXm, DragBS.c:1394 & Call to \code{WriteTargetsTables} which will write the \code{targetsTable} into the display buffer \\\hline
+ 8 & libXm, DragBS.c:905 & \code{targetsTable} is copied into the \code{fill} part of the memory region that is prepared to be written into the display buffer \\\hline
+ 9 & libXm, DragBS.c:928 & \code{XChangeProperty} is called which will write the \code{propertyRecPtr} array (which also contains the \code{fill} area with the function pointers) into the display buffer (\code{display->buffer}) \\
+\end{tabular}
+\caption{Creating a divergence in the display buffer in \code{xpdf}}
+\label{tab:dpybuffer}
+\end{table}
+
+
+\end{appendices}
+
+\end{document}
+
+

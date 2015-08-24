@@ -1,0 +1,38 @@
+\begin{thebibliography}{1}
+
+\bibitem{DBLP:conf/asplos/ChisnallRWWVMRD15}
+David Chisnall, Colin Rothwell, Robert N.~M. Watson, Jonathan Woodruff, Munraj
+  Vadera, Simon~W. Moore, Michael Roe, Brooks Davis, and Peter~G. Neumann.
+\newblock Beyond the {PDP-11:} architectural support for a memory-safe {C}
+  abstract machine.
+\newblock In {\"{O}}zcan {\"{O}}zturk, Kemal Ebcioglu, and Sandhya Dwarkadas,
+  editors, {\em Proceedings of the Twentieth International Conference on
+  Architectural Support for Programming Languages and Operating Systems,
+  {ASPLOS} '15, Istanbul, Turkey, March 14-18, 2015}, pages 117--130. {ACM},
+  2015.
+
+\bibitem{DBLP:journals/ieeesp/LarsenBF15}
+Per Larsen, Stefan Brunthaler, and Michael Franz.
+\newblock Automatic software diversity.
+\newblock {\em {IEEE} Security {\&} Privacy}, 13(2):30--37, 2015.
+
+\bibitem{DBLP:conf/eurosys/SalamatJGF09}
+Babak Salamat, Todd Jackson, Andreas Gal, and Michael Franz.
+\newblock Orchestra: intrusion detection using parallel execution and
+  monitoring of program variants in user-space.
+\newblock In Wolfgang Schr{\"{o}}der{-}Preikschat, John Wilkes, and Rebecca
+  Isaacs, editors, {\em Proceedings of the 2009 EuroSys Conference, Nuremberg,
+  Germany, April 1-3, 2009}, pages 33--46. {ACM}, 2009.
+
+\bibitem{ASLR}
+PaX Team.
+\newblock {ASLR documentation}.
+\newblock \url{http://pax.grsecurity.net/docs/aslr.txt}.
+
+\bibitem{volckaert2015cloning}
+Stijn Volckaert, Bart Coppens, and Bjorn De~Sutter.
+\newblock Cloning your gadgets: Complete rop attack immunity with multi-variant
+  execution.
+\newblock 2015.
+
+\end{thebibliography}
