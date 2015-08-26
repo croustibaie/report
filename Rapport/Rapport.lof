@@ -5,7 +5,8 @@
 \contentsline {figure}{\numberline {I.3}{\ignorespaces Building a gadget through ROP}}{15}{figure.1.3}
 \contentsline {figure}{\numberline {I.4}{\ignorespaces Monitor the variants inside a MVEE}}{16}{figure.1.4}
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {II.1}{\ignorespaces Rounding to 2 in diverse variants}}{18}{figure.2.1}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {III.1}{\ignorespaces Delta strategy}}{19}{figure.3.1}
-\contentsline {figure}{\numberline {III.2}{\ignorespaces Attacking the delta strategy if the cast back is allowed}}{20}{figure.3.2}
-\contentsline {figure}{\numberline {III.3}{\ignorespaces Normilizing pointers during pointer to integer cast}}{22}{figure.3.3}
+\contentsline {figure}{\numberline {III.1}{\ignorespaces Delta strategy}}{21}{figure.3.1}
+\contentsline {figure}{\numberline {III.2}{\ignorespaces Attacking the delta strategy if the cast back is allowed}}{22}{figure.3.2}
+\contentsline {figure}{\numberline {III.3}{\ignorespaces Normilizing pointers during pointer to integer cast}}{24}{figure.3.3}
