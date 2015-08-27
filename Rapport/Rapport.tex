@@ -1,5 +1,6 @@
 \documentclass[english]{enstaPRE}
 \usepackage{listings}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Pour compiler il suffit de faire make dans le dossier
@@ -39,7 +40,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \logo{uci.jpeg}
-\specialite{SIS/TIC}
+\specialite{Computer Security}
 \annees{2014-2015}
 \titre{Detecting address sensitivity in Multi Variant Execution Environnment (MVEE)}
 \soustitre{How to make real life programs compatible with MVEEs}
@@ -101,7 +102,7 @@ or came up with to solve and detect address sensitivity.
 The first chapter is an overview of the history of code injection based attacks and an introduction to Multi Variant Execution Environnments.
 
 \section{Smashing the stack for decades of research}
-In 1996, the paper Smashing the stack for fun and profit was released after a few months of buffer overflow attacks.
+In 1996, the paper Smashing the stack for fun and profit \cite{smashing} was released after a few months of buffer overflow attacks.
 The idea is to exploit the lack of boundary checking while giving the user the opportunity to write a buffer.
 Thus, the attacker can write over the buffer and overwrite the memory that is over the buffer. 
 A classic way to exploit this is to write shellcode in the upper stack and then change the return address of the function
@@ -135,7 +136,7 @@ Althought, pointer leakage is a way for the attacker to have an exact knowledge 
 Another very popular attack is ROP (Return Oriented Programming). In this attack, the hacker will use the executable code available 
 by building a gadget. A gadget is simply some chunks of code put together to build a specific set of instruction (spawning a terminal).
 To do so, the attacker just needs to find instructions chunks ending with the ret instruction. The ret instruction jumps to the addressed
-referenced by a specific cache. Thus, the attacker will overflow this cache with the consecutive address he needs to jump to 
+referenced by a specific cache \cite{warInMemory}. Thus, the attacker will overflow this cache with the consecutive address he needs to jump to 
 (the hacker is hijacking the control flow).
 \\\image{label}{Building a gadget through ROP}{height=8cm}{ROP.png} \\
 
@@ -143,7 +144,7 @@ referenced by a specific cache. Thus, the attacker will overflow this cache with
 
 In the MVEE threat model, we assume that the attacker has access to the source code, is able to read all of the memory layout through a leaking pointer and 
 is can successfully develop a gadget (see \id{Return oriented programming}).
-MVEEs consist in running various diversified variants of the same program in parallel. By this mean, if an attacker tries to developp
+MVEEs consist in running various diversified variants of the same program in parallel \cite{DBLP:conf/eurosys/SalamatJGF09}. By this mean, if an attacker tries to developp
 a buffer overflow attack, this attack will only work on one variant. To do so, the MVEE makes sure that the data layout is 
 different in every variant. Then, at runtime, a monitor checks every system call done by the variants, if they are not the same
 calls or if the arguments differ, the monitor instantly stops every variant and produces a report. \\
@@ -159,7 +160,7 @@ prevent the other variants from doing the same operation, etc. \\ IOCTLs system 
 of them and only a small amount are documented (only 421 of them are documented in the ioctl\_list man page and this page informs 
 that this list is very incomplete).  Still, with experience, those issues can be quickly solved.
 \\ \\
-The most important issue now encountered by GHUMVEE is address sensitivity. The first step of this internship was to understand and 
+The most important issue now encountered by GHUMVEE is address sensitivity \cite{volckaert2015cloning}. The first step of this internship was to understand and 
 define what is address sensitivity and this will be the topic of the next chapter.
 
 \chapter{Investigating address sensitivity}
@@ -225,6 +226,16 @@ necessary then the lowest memory value is rounded up and the highest is rounded 
 \label{tab:hashdiv}
 \end{table}
 %TODO Add graphics
+=======
+necessary then the lowest memory value is rounded up and the highest is rounded down.
+
+
+\begin{figure}[t, centering]
+ \centerline{\includegraphics[width=0.65\textwidth]{RoundUpMemory}}
+ \caption{Rounding to 2 in diverse variants}
+ \label{fig:rounding}
+\end{figure}
+>>>>>>> 7fa6a02c7a9cf8e9d5fddf8d1e0dad030d78268a
 
 
 \section{Writing a pointer or a padded structure}
@@ -266,6 +277,10 @@ int main(int argc, char *argv[]) {
 }
 \end{lstlisting}
 
+=======
+the structure members. These jumped bytes being uninitialized, divergence is created as explained in \ref{uninit}. See appendix \ref{padded} for the creation of a padded structure.
+\\ \\ \\
+>>>>>>> 7fa6a02c7a9cf8e9d5fddf8d1e0dad030d78268a
 
 After having covered most of the address sensitive behaviors, we focused on finding either a general solution to fix these 
 problems or a tool that would help the developer making his code MVEE compatible.
@@ -325,7 +340,7 @@ address sensitive only if a variable affected by this cast was used in a conditi
 Our idea was then to somehow mark the cast pointer and every single variable that was derivating from it and then check if the variables
 used in conditions or index were marked. If such a marked variable was identified, we would just have to trace back to the origin of
 the mark and notify it as address sensitive. \\ 
-After discussing with a doctor, we discovered that this method is called taint checking. \\
+After discussing with a doctor, we discovered that this method is called taint checking \cite{taint}. \\
 Taint checkers are known to highly slow down the program but it wasn't such a problem for us since we just needed it to prepare and 
 adapt the program (the tool would only be used once to determine the address sensitive casts). The biggest problem was to find a good 
 taint checker. Implementing one was not an option since it is very complicated and time consuming. On the other hand, most taint 
@@ -386,7 +401,7 @@ taint checking model in MVEE. Writing of a internal technical report concerning 
 \partb{Conclusion}
 Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
 
-\bibliographie{biblio}
+
 
 \afficheGlossaire
 
@@ -396,7 +411,36 @@ Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
 
 \listedesfigures
 
+
+
+\bibliographystyle{plain}
+\bibliography{biblio}
+
+
 \partb{Appendix}
-Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
+
+\begin{lstlisting}[frame=single, caption=Writing a padded structure, label=lst:padstruct, language=C]
+struct padded_struct {
+    char ch1; // 1 byte
+	      // 3 padding bytes
+    int i1;   // 4 bytes on 64bits system
+    int i2;   // 4 bytes
+};
+
+int main(int argc, char *argv[]) {
+    struct padded_struct foo;
+    
+    foo.ch1 = 'a';
+    foo.i1 = 0;
+    foo.i2 = 1;
+    
+    printf("sizeof padded_struct is %ld\n", sizeof(foo)); 
+      /* sizeof padded_struct is 12 */
+    
+    write(2, &foo, sizeof(foo));
+      /* Argument mismatch triggered if ASLR is enabled */
+    return 0;
+}
+\end{lstlisting}\label{padded}
 
 \end{document}

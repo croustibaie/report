@@ -6,6 +6,7 @@
 \contentsline {figure}{\numberline {II.3}{\ignorespaces Building a gadget through ROP}}{15}{figure.2.3}
 \contentsline {figure}{\numberline {II.4}{\ignorespaces Monitor the variants inside a MVEE}}{16}{figure.2.4}
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {III.1}{\ignorespaces Rounding to 2 in diverse variants}}{19}{figure.3.1}
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {IV.1}{\ignorespaces Delta strategy}}{21}{figure.4.1}
 \contentsline {figure}{\numberline {IV.2}{\ignorespaces Attacking the delta strategy if the cast back is allowed}}{22}{figure.4.2}

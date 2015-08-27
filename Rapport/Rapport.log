@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.8.1)  25 AUG 2015 21:30
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.8.1)  27 AUG 2015 08:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -823,7 +823,7 @@ Package: listings 2013/08/26 1.5b (Carsten Heinz)
 \glo@main@file=\write6
 \openout6 = `Rapport.glo'.
 
-Package glossaries Info: Writing glossary file Rapport.glo on input line 57.
+Package glossaries Info: Writing glossary file Rapport.glo on input line 58.
 
 \@input{glossary.aux}
 \openout2 = `glossary.aux'.
@@ -841,24 +841,27 @@ LaTeX Warning: Label `fig:label' multiply defined.
 
 LaTeX Warning: Label `fig:label' multiply defined.
 
+
+LaTeX Warning: Label `lst:padstruct' multiply defined.
+
 )
 \openout1 = `Rapport.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 59.
-LaTeX Font Info:    ... okay on input line 59.
-LaTeX Font Info:    Try loading font information for T1+lmss on input line 59.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Try loading font information for T1+lmss on input line 60.
  (/usr/share/texmf/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -934,7 +937,7 @@ File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 130.
 )
-Package hyperref Info: Link coloring ON on input line 59.
+Package hyperref Info: Link coloring ON on input line 60.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -944,9 +947,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count171
 )
-LaTeX Info: Redefining \ref on input line 59.
-LaTeX Info: Redefining \pageref on input line 59.
-LaTeX Info: Redefining \nameref on input line 59.
+LaTeX Info: Redefining \ref on input line 60.
+LaTeX Info: Redefining \pageref on input line 60.
+LaTeX Info: Redefining \nameref on input line 60.
 
 (./Rapport.out) (./Rapport.out)
 \@outlinefile=\write7
@@ -958,61 +961,61 @@ English.dict
 Dictionary: glossaries-dictionary, Language: English 
 )
 \c@lstlisting=\count172
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 61.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 62.
  (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 61.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 62.
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 61.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 62.
 
 
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 61.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 62.
 
 
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 61.
+(Font)              <12> on input line 62.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 61.
+(Font)              <8> on input line 62.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 61.
-LaTeX Font Info:    Try loading font information for U+stmry on input line 61.
+(Font)              <6> on input line 62.
+LaTeX Font Info:    Try loading font information for U+stmry on input line 62.
 
 (/usr/share/texlive/texmf-dist/tex/latex/stmaryrd/Ustmry.fd)
-<ensta.jpg, id=100, 72.7518pt x 88.1694pt>
+<ensta.jpg, id=108, 72.7518pt x 88.1694pt>
 File: ensta.jpg Graphic file (type jpg)
  <use ensta.jpg>
-Package pdftex.def Info: ensta.jpg used on input line 61.
+Package pdftex.def Info: ensta.jpg used on input line 62.
 (pdftex.def)             Requested size: 93.91457pt x 113.81102pt.
 
-<uci.jpeg, id=101, 381.5856pt x 380.8629pt>
+<uci.jpeg, id=109, 381.5856pt x 380.8629pt>
 File: uci.jpeg Graphic file (type jpg)
  <use uci.jpeg>
-Package pdftex.def Info: uci.jpeg used on input line 61.
+Package pdftex.def Info: uci.jpeg used on input line 62.
 (pdftex.def)             Requested size: 114.0224pt x 113.81102pt.
 
-<presentation.jpg, id=102, 1018.7661pt x 681.9879pt>
+<presentation.jpg, id=110, 1018.7661pt x 681.9879pt>
 File: presentation.jpg Graphic file (type jpg)
  <use presentation.jpg>
-Package pdftex.def Info: presentation.jpg used on input line 61.
+Package pdftex.def Info: presentation.jpg used on input line 62.
 (pdftex.def)             Requested size: 170.00119pt x 113.81102pt.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <17.28> on input line 61.
+(Font)              <17.28> on input line 62.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 61.
+(Font)              <10> on input line 62.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 61.
+(Font)              <14.4> on input line 62.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 61.
+(Font)              <7> on input line 62.
 
 [1
 
@@ -1082,49 +1085,49 @@ Part I.
 
 ]
 Part II.
-<buffer_overflow.jpg, id=180, 819.06pt x 1059.96pt>
+<buffer_overflow.jpg, id=191, 819.06pt x 1059.96pt>
 File: buffer_overflow.jpg Graphic file (type jpg)
  <use buffer_overflow.jpg>
-Package pdftex.def Info: buffer_overflow.jpg used on input line 110.
+Package pdftex.def Info: buffer_overflow.jpg used on input line 111.
 (pdftex.def)             Requested size: 175.882pt x 227.62204pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 104--111
+Underfull \hbox (badness 10000) in paragraph at lines 105--112
 
  []
 
-<nopslide.jpg, id=181, 730.73pt x 548.0475pt>
+<nopslide.jpg, id=192, 730.73pt x 548.0475pt>
 File: nopslide.jpg Graphic file (type jpg)
  <use nopslide.jpg>
-Package pdftex.def Info: nopslide.jpg used on input line 126.
+Package pdftex.def Info: nopslide.jpg used on input line 127.
 (pdftex.def)             Requested size: 303.50374pt x 227.62204pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 115--127
+Underfull \hbox (badness 10000) in paragraph at lines 116--128
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 115--127
+Underfull \hbox (badness 10000) in paragraph at lines 116--128
 
  []
 
-[13 <./buffer_overflow.jpg>] <ROP.png, id=188, 702.625pt x 445.665pt>
+[13 <./buffer_overflow.jpg>] <ROP.png, id=201, 702.625pt x 445.665pt>
 File: ROP.png Graphic file (type png)
 
 <use ROP.png>
-Package pdftex.def Info: ROP.png used on input line 140.
+Package pdftex.def Info: ROP.png used on input line 141.
 (pdftex.def)             Requested size: 358.85934pt x 227.62204pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 129--141
+Underfull \hbox (badness 10000) in paragraph at lines 130--142
 
  []
 
-[14 <./nopslide.jpg>] <MVEE.jpg, id=194, 1059.96pt x 819.06pt>
+[14 <./nopslide.jpg>] <MVEE.jpg, id=208, 1059.96pt x 819.06pt>
 File: MVEE.jpg Graphic file (type jpg)
  <use MVEE.jpg>
-Package pdftex.def Info: MVEE.jpg used on input line 150.
+Package pdftex.def Info: MVEE.jpg used on input line 151.
 (pdftex.def)             Requested size: 294.57098pt x 227.62204pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--164
+Underfull \hbox (badness 10000) in paragraph at lines 145--165
 
  []
 
@@ -1134,33 +1137,38 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 [15 <./ROP.png (PNG copy)>] [16 <./MVEE.jpg>]
 Part III.
 
-Underfull \hbox (badness 10000) in paragraph at lines 172--186
+Underfull \hbox (badness 10000) in paragraph at lines 173--187
 
  []
 
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 194.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 195.
 
 (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-Underfull \hbox (badness 10000) in paragraph at lines 190--202
+Underfull \hbox (badness 10000) in paragraph at lines 191--203
 
  []
 
 [17
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 211--214
+Underfull \hbox (badness 10000) in paragraph at lines 212--215
+
+ []
+
+<RoundUpMemory.png, id=228, 794.97pt x 614.295pt>
+File: RoundUpMemory.png Graphic file (type png)
+ <use RoundUpMemory.png>
+Package pdftex.def Info: RoundUpMemory.png used on input line 234.
+(pdftex.def)             Requested size: 295.90588pt x 228.6541pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 243--255
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 232--244
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 232--244
+Underfull \hbox (badness 10000) in paragraph at lines 243--255
 
  []
 
@@ -1171,82 +1179,92 @@ File: lstlang1.sty 2013/08/26 1.5b listings language file
 File: lstmisc.sty 2013/08/26 1.5b (Carsten Heinz)
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 245.
+nput line 256.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <12> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 247.
-LaTeX Font Info:    Try loading font information for OMS+lmss on input line 253
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 258.
+LaTeX Font Info:    Try loading font information for OMS+lmss on input line 264
 .
-LaTeX Font Info:    No file OMSlmss.fd. on input line 253.
+LaTeX Font Info:    No file OMSlmss.fd. on input line 264.
 
 
 LaTeX Font Warning: Font shape `OMS/lmss/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
-(Font)              for symbol `textasteriskcentered' on input line 253.
+(Font)              for symbol `textasteriskcentered' on input line 264.
 
 
 LaTeX Font Warning: Font shape `OMS/lmss/m/it' undefined
 (Font)              using `OMS/lmss/m/n' instead
-(Font)              for symbol `textasteriskcentered' on input line 261.
+(Font)              for symbol `textasteriskcentered' on input line 272.
 
-[19] [20
 
-]
-Part IV.
-<delta_strategy.jpg, id=249, 1059.96pt x 819.06pt>
-File: delta_strategy.jpg Graphic file (type jpg)
- <use delta_strategy.jpg>
-Package pdftex.def Info: delta_strategy.jpg used on input line 288.
-(pdftex.def)             Requested size: 294.57098pt x 227.62204pt.
-
-<attacking_delta.jpg, id=250, 1059.96pt x 819.06pt>
-File: attacking_delta.jpg Graphic file (type jpg)
- <use attacking_delta.jpg>
-Package pdftex.def Info: attacking_delta.jpg used on input line 298.
-(pdftex.def)             Requested size: 294.57098pt x 227.62204pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 282--299
+Underfull \hbox (badness 10000) in paragraph at lines 280--284
 
  []
 
-[21 <./delta_strategy.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 302--315
+
+Underfull \hbox (badness 10000) in paragraph at lines 280--284
+
+ []
+
+[19 <./RoundUpMemory.png>] [20]
+Part IV.
+<delta_strategy.jpg, id=274, 1059.96pt x 819.06pt>
+File: delta_strategy.jpg Graphic file (type jpg)
+ <use delta_strategy.jpg>
+Package pdftex.def Info: delta_strategy.jpg used on input line 303.
+(pdftex.def)             Requested size: 294.57098pt x 227.62204pt.
+
+<attacking_delta.jpg, id=275, 1059.96pt x 819.06pt>
+File: attacking_delta.jpg Graphic file (type jpg)
+ <use attacking_delta.jpg>
+Package pdftex.def Info: attacking_delta.jpg used on input line 313.
+(pdftex.def)             Requested size: 294.57098pt x 227.62204pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 297--314
+
+ []
+
+[21
+
+ <./delta_strategy.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 317--330
 
  []
 
 [22 <./attacking_delta.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 318--343
+Underfull \hbox (badness 10000) in paragraph at lines 333--358
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 318--343
+Underfull \hbox (badness 10000) in paragraph at lines 333--358
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 318--343
+Underfull \hbox (badness 10000) in paragraph at lines 333--358
 
  []
 
-<stijnsolution.jpg, id=261, 1059.96pt x 819.06pt>
+<stijnsolution.jpg, id=288, 1059.96pt x 819.06pt>
 File: stijnsolution.jpg Graphic file (type jpg)
  <use stijnsolution.jpg>
-Package pdftex.def Info: stijnsolution.jpg used on input line 361.
+Package pdftex.def Info: stijnsolution.jpg used on input line 376.
 (pdftex.def)             Requested size: 294.57098pt x 227.62204pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 346--362
+Underfull \hbox (badness 10000) in paragraph at lines 361--377
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 346--362
+Underfull \hbox (badness 10000) in paragraph at lines 361--377
 
  []
 
 [23] [24 <./stijnsolution.jpg>]
 Part V.
 
-Overfull \hbox (28.90334pt too wide) in paragraph at lines 383--383
+Overfull \hbox (28.90334pt too wide) in paragraph at lines 398--398
  [][] 
  []
 
@@ -1255,7 +1273,6 @@ Overfull \hbox (28.90334pt too wide) in paragraph at lines 383--383
 ] [26
 
 ]
-No file Rapport.bbl.
 No file Rapport.gls.
 [27] [28
 
@@ -1273,24 +1290,21 @@ No file Rapport.ind.
 \tf@lof=\write10
 \openout10 = `Rapport.lof'.
 
- [31] [32
+ (./Rapport.bbl [31] [32
+
+]) [33]
+[34
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 402.
- [33]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 402.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 446.
+ [35]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 446.
  (./Rapport.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 402.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 402.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 446.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 446.
+Package rerunfilecheck Info: File `Rapport.out' has not changed.
+(rerunfilecheck)             Checksum: 81B43CC3692A06D21F166231060C4F97;1721.
 
-
-Package rerunfilecheck Warning: File `Rapport.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Rapport.out':
-(rerunfilecheck)             Before: AF6B7A6EBAC4CE900E798513D4ADA002;1596
-(rerunfilecheck)             After:  848D6B88B08D3D925A7E3FC9DE6E76AD;1673.
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -1299,25 +1313,22 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 14261 strings out of 493304
- 202419 string characters out of 6139872
- 383834 words of memory out of 5000000
- 17308 multiletter control sequences out of 15000+600000
+ 14307 strings out of 493304
+ 203142 string characters out of 6139872
+ 385753 words of memory out of 5000000
+ 17321 multiletter control sequences out of 15000+600000
  54416 words of font info for 55 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  53i,18n,74p,1745b,1449s stack positions out of 5000i,500n,10000p,200000b,80000s
-pdfTeX warning (dest): name{figure.5.1} has been referenced but does not exis
-t, replaced by a fixed one
-
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}</usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/l
-m/lmss12.pfb></usr/share/texmf/fonts/type1/public/lm/lmssbx10.pfb></usr/share/t
-exmf/fonts/type1/public/lm/lmsso12.pfb></usr/share/texmf/fonts/type1/public/lm/
-lmtt12.pfb>
-Output written on Rapport.pdf (33 pages, 2410506 bytes).
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}</usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public
+/lm/lmss12.pfb></usr/share/texmf/fonts/type1/public/lm/lmssbx10.pfb></usr/share
+/texmf/fonts/type1/public/lm/lmsso12.pfb></usr/share/texmf/fonts/type1/public/l
+m/lmtt12.pfb>
+Output written on Rapport.pdf (35 pages, 2479516 bytes).
 PDF statistics:
- 364 PDF objects out of 1000 (max. 8388607)
- 310 compressed objects within 4 object streams
- 91 named destinations out of 1000 (max. 500000)
- 243 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 425 PDF objects out of 1000 (max. 8388607)
+ 367 compressed objects within 4 object streams
+ 121 named destinations out of 1000 (max. 500000)
+ 264 words of extra memory for PDF output out of 10000 (max. 10000000)
 
