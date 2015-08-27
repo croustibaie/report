@@ -1,4 +1,5 @@
 \documentclass[english]{enstaPRE}
+\usepackage{listings}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Pour compiler il suffit de faire make dans le dossier
@@ -83,10 +84,20 @@ Especially, the consequences of integer to pointer cast on MVEES is studied and 
 these issues. We also study the effects of sensitive memory oriented manipulations such as C's memory allocation.
 \tableofcontents
 
-\partb{Introduction}
-Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+\part{Introduction}
 
-\part{Chapter 1}
+My internship took place in UCI's department of computer science. The department hosted around 6 other interns during the summer to 
+work on various security oriented projects. I was assigned a project with another intern to work on Multi Variant Execution 
+Environment (MVEE). Our advisor Dr Per Larsen gave us a few tasks but mostly let us determine our weekly objectives.
+His only real demand was that we wrote a technical report after our three first week of research since the Defense Advanced
+Research Projects Agency was very interested in our topic.
+The goal of the internship was to solve one of MVEE's major issue that we later named address sensitivity. Solving this issue being
+a huge step to make them usable in real life. \\
+The first part of this report is a global review of nowadays major code injection attacks and an introduction to MVEEs.
+Address sensitivity is defined and studied in the second part and the last section deals with the tools we implemented 
+or came up with to solve and detect address sensitivity.
+
+\part{Background Description}
 The first chapter is an overview of the history of code injection based attacks and an introduction to Multi Variant Execution Environnments.
 
 \section{Smashing the stack for decades of research}
@@ -151,7 +162,10 @@ that this list is very incomplete).  Still, with experience, those issues can be
 The most important issue now encountered by GHUMVEE is address sensitivity. The first step of this internship was to understand and 
 define what is address sensitivity and this will be the topic of the next chapter.
 
-\chapter{Chapter 2}
+\chapter{Investigating address sensitivity}
+
+This is the first task my co worker and I were assigned, the definition and in depth study of address sensitivity resulted in the
+writting of a technical report for the DARPA. 
 
 \section{A definition of address sensitivity}
 
@@ -170,6 +184,7 @@ The test subjects were compiled using gcc4.8
 with the default debug configuration on an Ubuntu 14.04 amd64 system. During the tests we used Address Space Layout Randomization as a diversification.
 In the following, each identified category of address sensitive behavior, is described in detail.
 
+
 \section{Use of uninitialized value} \label{uninit}
 
 Common C compilers return the contents of the associated memory cell if an uninitialized variable is used.
@@ -183,7 +198,8 @@ Later on, an open syscall with the random filename will trigger an argument mism
 a situation in wich the control flow would be determined by this variable’s value and a syscall mismatch would be triggered.
 The error could also occur without any data layout diversification but it is less likely since the memory at the variable’s address would
 probably be the same for both variants (due to a recent stack memory free).
-It is also worth noting that a similar behavior can result from the use-after-free idiom.
+It is also worth noting that a similar behavior can result from the use-after-free idiom. \\
+
 
 \section{Treating pointer as integers}
 
@@ -194,8 +210,20 @@ the other variant’s would not (ADD TABLE).
 
 A more complex problem appears when it comes to memory mapping such as in the GNU libc memory allocator.
 In such function, the allocated memory as to be aligned to a specific boundary. To do so, more memory is allocated than it would be 
-necessary then the lowest memory value is rounded up and the highest is rounded down.
+necessary then the lowest memory value is rounded up and the highest is rounded down. \\
 
+\begin{table}[t]
+ \centering
+ \def\arraystretch{1.5}
+ \begin{tabular}{c|c}
+ Variant 1 & Variant 2 \\\hline
+ Hashing 0xffffffff &  Hashing 0xdddddddd \\
+ Hash result = no collision & Hash result= Collision \\
+  \multicolumn{2}{c}{Diverging Behavior}\\
+\end{tabular}
+\caption{Example of a control flow divergence during a pointer hashing}
+\label{tab:hashdiv}
+\end{table}
 %TODO Add graphics
 
 
@@ -212,15 +240,42 @@ In the same X libraries, threads exchange some specific structures. For performa
 structure in a pipe by casting the struct pointer to character pointer. The other thread just casts it back when it receives it.
 The problem here is that C compilers add some padding bytes to the structure. Once again, these padding bytes are introduced for performance
 reasons (the processor is faster if the data are 4 bytes aligned). Technically, the compiler just ``jumps'' a few bytes to align 
-the structure members. These jumped bytes being uninitialized, divergence is created as explained in \ref{uninit}.
-\\ \\ \\
+the structure members. These jumped bytes being uninitialized, divergence is created as explained in \ref{uninit}. \\
+
+\begin{lstlisting}[frame=single, caption=Writing a padded structure, label=lst:padstruct, language=C]
+struct padded_struct {
+    char ch1; // 1 byte
+	      // 3 padding bytes
+    int i1;   // 4 bytes on 64bits system
+    int i2;   // 4 bytes
+};
+
+int main(int argc, char *argv[]) {
+    struct padded_struct foo;
+    
+    foo.ch1 = 'a';
+    foo.i1 = 0;
+    foo.i2 = 1;
+    
+    printf("sizeof padded_struct is %ld\n", sizeof(foo)); 
+      /* sizeof padded_struct is 12 */
+    
+    write(2, &foo, sizeof(foo));
+      /* Argument mismatch triggered if ASLR is enabled */
+    return 0;
+}
+\end{lstlisting}
+
 
 After having covered most of the address sensitive behaviors, we focused on finding either a general solution to fix these 
 problems or a tool that would help the developer making his code MVEE compatible.
 It appeared that the pointer to integer casts are the most common cause of address sensitivity and we then decided to focus on this 
 problem.
 
-\chapter{Chapter 3}
+\chapter{Tool development}
+
+As the second part of our internship, my colleague and I built up a few tools that helped studying, detecting and solving address
+sensitivity issues. This work also lead to the writting of a technical report for the laboratory.
 
 \section{The delta strategy}
 
@@ -240,6 +295,7 @@ But since the MVEE is a security software, we had to also study if this feature 
 back is allowed. \\ The attacker would be able to overwite the integer (i.e. the cast pointer) with some malicious address, of course
 this address only redirects to some malicious code in one variant. But if a cast back is done, every slave will substract its delta
 value and the pointer will point to malicious in every single variant. \\ 
+\image{delta_attack}{Attacking the delta strategy if the cast back is allowed}{height=8cm}{attacking_delta.jpg} \\
 
 \section{Abstraction and cast back occurence analysis}
 
@@ -301,6 +357,17 @@ A table has to be created to remember if a pointer has already been assigned a i
 By that mean, every cast pointer would have the same value. Plus, this implementation doesn't require any kind of communication between
 the variants which is easier to implement and safer.\\
 \image{stijn}{Normilizing pointers during pointer to integer cast}{height=8cm}{stijnsolution.jpg} \\
+
+\section{Internship planning}
+
+June 6 -> June 20: Setting up GHUMVEE, reading papers about MVEE and code injection attacks. Minor GHUMVEE bug fixes.
+\\
+June 21 -> July 5: Investigation on address sensitivity. implementation of a few IOCTLs in GHUMVEE.
+\\
+July 6 -> July 12: Writting of the technical report for the DARPA.
+\\ 
+July 13 -> August 2: T
+
 
 \partb{Conclusion}
 Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 

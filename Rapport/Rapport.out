@@ -2,23 +2,24 @@
 \BOOKMARK [0][]{chapter*.2}{Acknowledgment}{}% 2
 \BOOKMARK [0][]{chapter*.3}{Abstract}{}% 3
 \BOOKMARK [0][]{chapter*.4}{Contents}{}% 4
-\BOOKMARK [0][]{chapter*.5}{Introduction}{}% 5
-\BOOKMARK [0][]{chapter.1}{I Background Description}{}% 6
-\BOOKMARK [1][]{section.1.1}{I.1 Smashing the stack for decades of research}{chapter.1}% 7
-\BOOKMARK [1][]{section.1.2}{I.2 Address space layout randomization and XOR memory}{chapter.1}% 8
-\BOOKMARK [1][]{section.1.3}{I.3 Return oriented programming}{chapter.1}% 9
-\BOOKMARK [1][]{section.1.4}{I.4 Multi Variant Execution Environnment}{chapter.1}% 10
-\BOOKMARK [0][]{chapter.2}{II Investigating address sensitivity}{}% 11
-\BOOKMARK [1][]{section.2.1}{II.1 A definition of address sensitivity}{chapter.2}% 12
-\BOOKMARK [1][]{section.2.2}{II.2 Use of uninitialized value}{chapter.2}% 13
-\BOOKMARK [1][]{section.2.3}{II.3 Treating pointer as integers}{chapter.2}% 14
-\BOOKMARK [1][]{section.2.4}{II.4 Writing a pointer or a padded structure}{chapter.2}% 15
-\BOOKMARK [0][]{chapter.3}{III Tool development}{}% 16
-\BOOKMARK [1][]{section.3.1}{III.1 The delta strategy}{chapter.3}% 17
-\BOOKMARK [1][]{section.3.2}{III.2 Abstraction and cast back occurence analysis}{chapter.3}% 18
-\BOOKMARK [1][]{section.3.3}{III.3 Taint checking}{chapter.3}% 19
-\BOOKMARK [1][]{section.3.4}{III.4 Function inserting tool}{chapter.3}% 20
-\BOOKMARK [0][]{chapter*.6}{Conclusion}{}% 21
-\BOOKMARK [0][]{chapter*.7}{List of Tables}{}% 22
-\BOOKMARK [0][]{chapter*.8}{List of Figures}{}% 23
-\BOOKMARK [0][]{chapter*.9}{Appendix}{}% 24
+\BOOKMARK [0][]{chapter.1}{I Introduction}{}% 5
+\BOOKMARK [0][]{chapter.2}{II Background Description}{}% 6
+\BOOKMARK [1][]{section.2.1}{II.1 Smashing the stack for decades of research}{chapter.2}% 7
+\BOOKMARK [1][]{section.2.2}{II.2 Address space layout randomization and XOR memory}{chapter.2}% 8
+\BOOKMARK [1][]{section.2.3}{II.3 Return oriented programming}{chapter.2}% 9
+\BOOKMARK [1][]{section.2.4}{II.4 Multi Variant Execution Environnment}{chapter.2}% 10
+\BOOKMARK [0][]{chapter.3}{III Investigating address sensitivity}{}% 11
+\BOOKMARK [1][]{section.3.1}{III.1 A definition of address sensitivity}{chapter.3}% 12
+\BOOKMARK [1][]{section.3.2}{III.2 Use of uninitialized value}{chapter.3}% 13
+\BOOKMARK [1][]{section.3.3}{III.3 Treating pointer as integers}{chapter.3}% 14
+\BOOKMARK [1][]{section.3.4}{III.4 Writing a pointer or a padded structure}{chapter.3}% 15
+\BOOKMARK [0][]{chapter.4}{IV Tool development}{}% 16
+\BOOKMARK [1][]{section.4.1}{IV.1 The delta strategy}{chapter.4}% 17
+\BOOKMARK [1][]{section.4.2}{IV.2 Abstraction and cast back occurence analysis}{chapter.4}% 18
+\BOOKMARK [1][]{section.4.3}{IV.3 Taint checking}{chapter.4}% 19
+\BOOKMARK [1][]{section.4.4}{IV.4 Function inserting tool}{chapter.4}% 20
+\BOOKMARK [0][]{chapter.5}{V Planning of the internship}{}% 21
+\BOOKMARK [0][]{chapter*.5}{Conclusion}{}% 22
+\BOOKMARK [0][]{chapter*.6}{List of Tables}{}% 23
+\BOOKMARK [0][]{chapter*.7}{List of Figures}{}% 24
+\BOOKMARK [0][]{chapter*.8}{Appendix}{}% 25
