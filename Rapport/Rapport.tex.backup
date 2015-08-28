@@ -1,5 +1,14 @@
 \documentclass[english]{enstaPRE}
 \usepackage{listings}
+\usepackage{amssymb}
+\usepackage{xcolor}
+
+\newcommand{\mysquare}[1][black]{\small\textcolor{#1}{\ensuremath\blacksquare}}
+\newcommand{\mycirc}[1][black]{\Large\textcolor{#1}{\ensuremath\bullet}}
+\newcommand{\mylozenge}[1][black]{\small\textcolor{#1}{\ensuremath\blacklozenge}}
+\newcommand{\mytriangle}[1][black]{\small\textcolor{#1}{\ensuremath\blacktriangle}}
+\newcommand{\mydtriangle}[1][black]{\small\textcolor{#1}{\ensuremath\blacktriangledown}}
+\newcommand{\mystar}[1][black]{\Large\textcolor{#1}{\ensuremath\star}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Pour compiler il suffit de faire make dans le dossier
@@ -39,7 +48,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \logo{uci.jpeg}
-\specialite{SIS/TIC}
+\specialite{Computer Security}
 \annees{2014-2015}
 \titre{Detecting address sensitivity in Multi Variant Execution Environnment (MVEE)}
 \soustitre{How to make real life programs compatible with MVEEs}
@@ -71,8 +80,9 @@ paper format or distributed in electronic format.}
 I thank professor Michael Franz for giving me the opportunity to work in highly recognized software security laboratory.
 I also thank my tutor doctor Per Larsen for advising and encouraging me during this internship.
 Thank to all of the very multi cultural team of the SSLAB for creating such a friendly and comfortable working environment.
+I thank Joe Nash for being such a cheerfull intern supervisor and for his language advice.
 I finally thank my co worker David Poetzsch-Heffter. Leading this project and discussing new ideas together was extremely 
-instructive and I do believe that we learnt a lot from each other.
+instructive and I do believe that we learned a lot from each other.
 
 \partb{Abstract}
 
@@ -86,27 +96,24 @@ these issues. We also study the effects of sensitive memory oriented manipulatio
 
 \part{Introduction}
 
-<<<<<<< HEAD
 My internship took place in UCI's department of computer science. The department hosted around 6 other interns during the summer to 
 work on various security oriented projects. I was assigned a project with another intern to work on Multi Variant Execution 
 Environment (MVEE). Our advisor Dr Per Larsen gave us a few tasks but mostly let us determine our weekly objectives.
 His only real demand was that we wrote a technical report after our three first week of research since the Defense Advanced
 Research Projects Agency was very interested in our topic.
 The goal of the internship was to solve one of MVEE's major issue that we later named address sensitivity. Solving this issue being
-a huge step to make them usable in real life. \\
+a huge step to making them usable in real life. \\
 The first part of this report is a global review of nowadays major code injection attacks and an introduction to MVEEs.
 Address sensitivity is defined and studied in the second part and the last section deals with the tools we implemented 
 or came up with to solve and detect address sensitivity.
 
-=======
->>>>>>> 7fa6a02c7a9cf8e9d5fddf8d1e0dad030d78268a
 \part{Background Description}
 The first chapter is an overview of the history of code injection based attacks and an introduction to Multi Variant Execution Environnments.
 
 \section{Smashing the stack for decades of research}
-In 1996, the paper Smashing the stack for fun and profit was released after a few months of buffer overflow attacks.
+In 1996, the paper Smashing the stack for fun and profit \cite{smashing} was released after years of buffer overflow attacks.
 The idea is to exploit the lack of boundary checking while giving the user the opportunity to write a buffer.
-Thus, the attacker can write over the buffer and overwrite the memory that is over the buffer. 
+Thus, the attacker can write beyond the buffer and overwrite sections of memory. 
 A classic way to exploit this is to write shellcode in the upper stack and then change the return address of the function
 to the beginning of the shellcode. A shellcode is a sequence of commands that result in the opening of a shell, usable by the user which
 would now have the access rights granted to the original program.\\
@@ -116,7 +123,7 @@ To face this problem, many defense mechanisms have been created over the past tw
 
 \section{Address space layout randomization and XOR memory}
 Address space layout is a simple mechanism that is now enabled by default in any operating system. The idea is just to give the 
-program a different starting memory at every run. As a consequence, the attacker will have a hard time rewritting the return address since
+program a different starting memory at every run. As a consequence, the attacker will have a hard time rewriting the return address since
 he cannot know anymore where his shellcode is located. 
 Nevertheless, the insertion of nop (no operation) instructions before the shellcode allow the attacker to inject a random 
 return address since he could have a high chance (depending of the number of mops) to land on a nop and ``slide'' to the shellcode.
@@ -124,13 +131,13 @@ return address since he could have a high chance (depending of the number of mop
 Another mechanism that is also commonly used is Execute Or Read memory (XOR). In this configuration, every memory address is marked
 as either readable or executable. As a consequence, shellcode won't be executed since it is very unlikely that all of the shellcode
 area is marked as executable.
-Even though this technique seems extremely efficient, attackers have been extremely successful in bypassing this defense 
+Even though this technique seems extremely efficient, attackers have been very creative regarding bypassing this defense 
 and a lot of others.This is the reason why buffer overflows still rank as the third most dangerous attack in the CWE/SANS ranking.\\
 \image{label}{Nopslide technique}{height=8cm}{nopslide.jpg} \\
 
-\section{Return oriented programming}
+\section{Return oriented programming}\label{ROP}
 Inserting malicious code being impossible, the new attack model was based on reusing the already available and executable code present
-in the memory. \\ The Return into Libc attack, for example, consist in rewritting the return address to the beginning of a known
+in the memory. \\ The Return into Libc attack, for example, consist in rewriting the return address to the beginning of a known
 executable memory in the libc library (such as the system function, which allows to spawn a new terminal). One may think that ASLR
 prevents the attacker from knowing the precise address of this function, but bruteforcing remains efficient on 32bits systems.
 Althought, pointer leakage is a way for the attacker to have an exact knowledge of the code layout, allowing him to perform such attacks.
@@ -138,23 +145,23 @@ Althought, pointer leakage is a way for the attacker to have an exact knowledge 
 Another very popular attack is ROP (Return Oriented Programming). In this attack, the hacker will use the executable code available 
 by building a gadget. A gadget is simply some chunks of code put together to build a specific set of instruction (spawning a terminal).
 To do so, the attacker just needs to find instructions chunks ending with the ret instruction. The ret instruction jumps to the addressed
-referenced by a specific cache. Thus, the attacker will overflow this cache with the consecutive address he needs to jump to 
+referenced by a specific cache \cite{warInMemory}. Thus, the attacker will overflow this cache with the consecutive address he needs to jump to 
 (the hacker is hijacking the control flow).
 \\\image{label}{Building a gadget through ROP}{height=8cm}{ROP.png} \\
 
 \section{Multi Variant Execution Environnment}
 
 In the MVEE threat model, we assume that the attacker has access to the source code, is able to read all of the memory layout through a leaking pointer and 
-is can successfully develop a gadget (see \id{Return oriented programming}).
-MVEEs consist in running various diversified variants of the same program in parallel. By this mean, if an attacker tries to developp
-a buffer overflow attack, this attack will only work on one variant. To do so, the MVEE makes sure that the data layout is 
+can successfully develop a gadget (see \ref{ROP}).
+MVEEs consist in running various diversified variants of the same program in parallel \cite{DBLP:conf/eurosys/SalamatJGF09}. By this mean, if an attacker tries to developp
+a buffer overflow attack, this attack will only work in one variant. To do so, the MVEE makes sure that the data layout is 
 different in every variant. Then, at runtime, a monitor checks every system call done by the variants, if they are not the same
 calls or if the arguments differ, the monitor instantly stops every variant and produces a report. \\
 \image{label}{Monitor the variants inside a MVEE}{height=8cm}{MVEE.jpg} \\
 As you can see above, MVEEs induces a consequent time overhead for two reasons: First, the program is run multiple times. And second,
 variants have to wait for each other when they want to perform a system call (which of course, occurs a lot).
-However, experience proves that running a MVEE with 2 or 3 variants is still very intersting compared to other defense mechanisms 
-since it is probably one of the most powerful and is still pretty fast compared to other techniques such as control flow integrity.
+However, experience proves that running a MVEE with 2 or 3 variants is still very interesting compared to other defense mechanisms 
+since it is probably one of the most powerful and it is still pretty fast compared to other techniques such as control flow integrity.
 \\The implementation of a MVEE is a real challenge since a lot of programming issues have to be solved.
 First the number of system call is important and every single one may require a specific attention. If a pointer is given as an argument,
 the monitor should make sure that the contents are the same, if an output is created, only one variant should write and we need to 
@@ -162,17 +169,13 @@ prevent the other variants from doing the same operation, etc. \\ IOCTLs system 
 of them and only a small amount are documented (only 421 of them are documented in the ioctl\_list man page and this page informs 
 that this list is very incomplete).  Still, with experience, those issues can be quickly solved.
 \\ \\
-The most important issue now encountered by GHUMVEE is address sensitivity. The first step of this internship was to understand and 
+The most important issue now encountered by MVEEs  is address sensitivity . The first step of this internship was to understand and 
 define what is address sensitivity and this will be the topic of the next chapter.
 
 \chapter{Investigating address sensitivity}
 
 This is the first task my co worker and I were assigned, the definition and in depth study of address sensitivity resulted in the
-<<<<<<< HEAD
-writting of a technical report for the DARPA. 
-=======
-writting of a technical report for the Defense Advanced Research Projects Agency (DARPA). 
->>>>>>> 7fa6a02c7a9cf8e9d5fddf8d1e0dad030d78268a
+writing of a technical report for the DARPA. 
 
 \section{A definition of address sensitivity}
 
@@ -184,11 +187,11 @@ As address sensitivity is a MVEE specific issue, it hasn't been studied so far a
 sensitivity so as to have a clear understanding on how to fiw this major problem. \\ \\
 To get a better understanding of address sensitive behaviors we tested various C/C++
 programs in a multi-variant execution environment. While most of the linux core utils
-worked fine, the libX11 and gtk libraries were consequent sources of address sensitivity.
-TODO : REFERENCE THE TESTED PROGRAMS
-The experiments were carried out using GHUMVEE, which is the most fully featured academic MVEE currently available. REFERENCE GHUMVEE.
+worked fine, the libX11 and gtk libraries were consequent sources of address sensitivity.\\
+The experiments were carried out using GHUMVEE\cite{volckaert2015cloning}, which is the most fully featured academic MVEE currently available.
 The test subjects were compiled using gcc4.8
-with the default debug configuration on an Ubuntu 14.04 amd64 system. During the tests we used Address Space Layout Randomization as a diversification.
+with the default debug configuration on an Ubuntu 14.04 amd64 system. During the tests we used Address Space Layout Randomization as a memory 
+layout diversification technique.
 In the following, each identified category of address sensitive behavior, is described in detail.
 
 
@@ -213,11 +216,10 @@ It is also worth noting that a similar behavior can result from the use-after-fr
 Although it is implementation-defined behavior in C, casting pointers to integers is a common practice.
 A frequent example of this idiom is the use of pointer values as hash keys since it is an easy way to make sure every key is unique. With ASLR enabled,
 the pointer values being different, one of the hashes could result in a collision and the hashtable would have to be resized while
-the other variant’s would not (ADD TABLE).
+the other variant’s would not.
 
 A more complex problem appears when it comes to memory mapping such as in the GNU libc memory allocator.
 In such function, the allocated memory as to be aligned to a specific boundary. To do so, more memory is allocated than it would be 
-<<<<<<< HEAD
 necessary then the lowest memory value is rounded up and the highest is rounded down. \\
 
 \begin{table}[t]
@@ -232,9 +234,6 @@ necessary then the lowest memory value is rounded up and the highest is rounded 
 \caption{Example of a control flow divergence during a pointer hashing}
 \label{tab:hashdiv}
 \end{table}
-%TODO Add graphics
-=======
-necessary then the lowest memory value is rounded up and the highest is rounded down.
 
 
 \begin{figure}[t, centering]
@@ -242,13 +241,13 @@ necessary then the lowest memory value is rounded up and the highest is rounded 
  \caption{Rounding to 2 in diverse variants}
  \label{fig:rounding}
 \end{figure}
->>>>>>> 7fa6a02c7a9cf8e9d5fddf8d1e0dad030d78268a
+
 
 
 \section{Writing a pointer or a padded structure}
 
 Writing a pointer is also a big issue since the pointers will always be different among the variants.
-Usually, writting those pointer values in a file or in a standard output is useless and thus, one could think that this problem won't occur in
+Usually, writing those pointer values in a file or in a standard output is useless and thus, one could think that this problem won't occur in
 real life programs. Nevertheless, we found a few out the the libx11 library does it with some pointers to GUI 
 (Graphical User Interface) handler functions. These pointers are stored in a display buffer that is later on given to another thread 
 thourgh a \texttt{writev()} system call.
@@ -258,8 +257,8 @@ In the same X libraries, threads exchange some specific structures. For performa
 structure in a pipe by casting the struct pointer to character pointer. The other thread just casts it back when it receives it.
 The problem here is that C compilers add some padding bytes to the structure. Once again, these padding bytes are introduced for performance
 reasons (the processor is faster if the data are 4 bytes aligned). Technically, the compiler just ``jumps'' a few bytes to align 
-<<<<<<< HEAD
-the structure members. These jumped bytes being uninitialized, divergence is created as explained in \ref{uninit}. \\
+the structure members. These jumped bytes being uninitialized, divergence is created as explained in \ref{uninit}.  
+See appendix \ref{padded} for the creation of a padded structure.
 
 \begin{lstlisting}[frame=single, caption=Writing a padded structure, label=lst:padstruct, language=C]
 struct padded_struct {
@@ -285,10 +284,9 @@ int main(int argc, char *argv[]) {
 }
 \end{lstlisting}
 
-=======
-the structure members. These jumped bytes being uninitialized, divergence is created as explained in \ref{uninit}. see \ref{padded}
-\\ \\ \\
->>>>>>> 7fa6a02c7a9cf8e9d5fddf8d1e0dad030d78268a
+
+
+
 
 After having covered most of the address sensitive behaviors, we focused on finding either a general solution to fix these 
 problems or a tool that would help the developer making his code MVEE compatible.
@@ -298,7 +296,7 @@ problem.
 \chapter{Tool development}
 
 As the second part of our internship, my colleague and I built up a few tools that helped studying, detecting and solving address
-sensitivity issues. This work also lead to the writting of a technical report for the laboratory.
+sensitivity issues. This work also lead to the writing of a technical report for the laboratory.
 
 \section{The delta strategy}
 
@@ -310,14 +308,14 @@ variant is the master and that each ``slave'' has to know the offset between its
 The slaves would just have to add this delta to the freshly cast integer. \\ 
 \image{label}{Delta strategy}{height=8cm}{delta_strategy.jpg} \\
 But this strategy raises a new question: How to deal with cast backs (int->ptr->int)? \\ First, we spent a lot of time determining wether the program
-genreal behavior would be alterated by this strategy in case of a cast back (integer to pointer). If some non linear computations
+genreal behavior would be altered by this strategy in case of a cast back (integer to pointer). If some non linear computations
 are applied to the integer, the result of the cast back value would be very different from what it should be without the delta 
 strategy. But after studying it, it appears that every non linear operation on a memory address results in a totally unpredictable
 value. Thus, the programmer wouldn't rely on this new pointer. So we could consider substracting the delta when a cast back is done. \\
 But since the MVEE is a security software, we had to also study if this feature would create a security breach... And it does if casting
-back is allowed. \\ The attacker would be able to overwite the integer (i.e. the cast pointer) with some malicious address, of course
-this address only redirects to some malicious code in one variant. But if a cast back is done, every slave will substract its delta
-value and the pointer will point to malicious in every single variant. \\ 
+back is allowed. \\ The attacker would be able to overwite the integer (i.e. the cast pointer) with any address, of course
+this address should only redirect to malicious code in one variant. But if a cast back is done, every slave will substract its delta
+value and every variant's pointer will reference the same malicious code. \\ 
 \image{delta_attack}{Attacking the delta strategy if the cast back is allowed}{height=8cm}{attacking_delta.jpg} \\
 
 \section{Abstraction and cast back occurence analysis}
@@ -348,19 +346,32 @@ address sensitive only if a variable affected by this cast was used in a conditi
 Our idea was then to somehow mark the cast pointer and every single variable that was derivating from it and then check if the variables
 used in conditions or index were marked. If such a marked variable was identified, we would just have to trace back to the origin of
 the mark and notify it as address sensitive. \\ 
-After discussing with a doctor, we discovered that this method is called taint checking. \\
+After discussing with a doctor, we discovered that this method is called taint checking \cite{taint}. \\
 Taint checkers are known to highly slow down the program but it wasn't such a problem for us since we just needed it to prepare and 
 adapt the program (the tool would only be used once to determine the address sensitive casts). The biggest problem was to find a good 
 taint checker. Implementing one was not an option since it is very complicated and time consuming. On the other hand, most taint 
 checkers were developed for a specific use and didn't fit our needs. We finally found out the valgrind's taint checker (taintgrind)
 allowed the user to manually taint its sources. Of course, manually tainting the source was not an option. But this is where our
 clang plugin came in handy: We could compile our programs and notify every single cast, we would then just have to create a script 
-that would do some source to source compilation to add the tainting.
-\\ \\
-The source to source compilation was quite successful but still, some slighlty unusual syntax would imply some manual fix to have the
-program running. Still, we tested the script on a few libraries just as a proof of concept and we didn't find any flaw in the taint
-checking process. \\ \\
-Still, the tool couldn't be seriously used and a form of delta strategy had to be implemented. \\
+that would do some source to source compilation to add the tainting. Taintgrind outputing every single tainted instruction, we also had to write a script that detects the sink (a tainted variable used
+in a condition or as an index) and traces back to the evil pointer cast. \\ \\
+
+\subsection{Investigation on taint checking for MVEEs}
+
+The source to source compilation was quite successful but still, any unusual syntax would imply some manual fix to have the
+program running. One could think that the reach of such a tool is very limited, but it appeared to be extremely interesting for our study.
+We realized that even though our program is complete (It detects every dangerous pointer cast), it is not sound.
+A lot of false positive could be detected. For example casting two pointers to integer and checking wether they are equal is safe.
+Also, any pointer cast to an int then modified to be cast back as a valid pointer could trigger a warning.
+\\
+We tried to imagine another model with three colors but once again, we found some other examples of false positive detection. At this point, we had the 
+feeling that we couldn't create a complete and sound taint checking process for our MVEE. After Mathematically enouncing the problem, we found out 
+that taint checking cannot be sound and complete for address sensitive pointer detection. We also generalized it by proving 
+that sound and complete sensitive pointer detection is undecidable in general. Proof can be found in the appendix.
+\\
+But still, it appears that the solution with three colors is by far the best since it drastically reduces the number of false positives without being too
+complicated. The idea is that cast pointers are assigned a color but are not considered dangerous until a certain computation is done. See the appendix for 
+a description of this model.
 
 \section{Function inserting tool}
 
@@ -381,21 +392,33 @@ By that mean, every cast pointer would have the same value. Plus, this implement
 the variants which is easier to implement and safer.\\
 \image{stijn}{Normilizing pointers during pointer to integer cast}{height=8cm}{stijnsolution.jpg} \\
 
-\section{Internship planning}
+\chapter{Planning of the internship}
 
-June 6 -> June 20: Setting up GHUMVEE, reading papers about MVEE and code injection attacks. Minor GHUMVEE bug fixes.
-\\
-June 21 -> July 5: Investigation on address sensitivity. implementation of a few IOCTLs in GHUMVEE.
-\\
-July 6 -> July 12: Writting of the technical report for the DARPA.
-\\ 
-July 13 -> August 2: T
+
+\begin{tableau}{planning}{Internship Planning}{|c|C{12cm}|}
+    \hline
+    June 6 to June 20 & Setting up GHUMVEE, reading papers about MVEE and code injection attacks. Minor GHUMVEE bug fixes.\\
+    \hline
+    June 21 to July 5 & Investigation on address sensitivity. implementation of a few IOCTLs in GHUMVEE. \\
+    \hline
+    July 6 to July 12 & Writing of the technical report for the DARPA.  \\
+    \hline
+    July 13 to August 2 &  Analysis of common hash tables to find a common pattern. Modelisation of the delta strategy.
+implementation  the cast detection tool in LLVM. \\
+    \hline
+    August 3 to August 16 & Research on taint analysis. Implentation of a source to source compilation script to implement the taint.
+implementation of a script to extract information from taintgrind's output.\\
+    \hline
+    August 16 to August 28 & Development of a new LLVM tool that inserts function after pointer casts. Mathematical formulation of the
+taint checking model in MVEE. Writing of a internal technical report concerning all research from July 13 until the end of the internship.\\
+    \hline
+\end{tableau}
 
 
 \partb{Conclusion}
 Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
 
-\bibliographie{biblio}
+
 
 \afficheGlossaire
 
@@ -405,8 +428,72 @@ Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
 
 \listedesfigures
 
+
+
+\bibliographystyle{plain}
+\bibliography{biblio}
+
+
 \partb{Appendix}
 
+\section{Three colored taint checking}
+
+\noindent
+\mycirc[green]: Sane value (integer,char,...) \\ 
+\mycirc[blue]: Pointer or integer resulting from a pointer cast  \\
+\mycirc[red]: Dangerous value \\
+\mycirc[black]: Any kind of value ( \mycirc[green] \mycirc[blue] \mycirc[red]) \\
+\textcolor{green}{0}: A zero value tainted green.
+\\ \\
+Sinks are conditions based on red values and dereferences of red values.
+
+{\centering
+\mycirc[blue]  == , - \mycirc[blue] \rightarrow \mycirc[green] \\
+\mycirc[blue]  other \mycirc[blue] \rightarrow \mycirc[red] \\
+\mycirc[blue]   + , -  \mycirc[green] \rightarrow \mycirc[blue] \\
+\mycirc[blue]  other \mycirc[green] \rightarrow \mycirc[red] \\
+\mycirc[blue]  ==  \textcolor{green}{0} \rightarrow \mycirc[green] \\
+\mycirc[black] any \mycirc[red] \rightarrow \mycirc[red]\\
+\mycirc[green] any \mycirc[green] \rightarrow \mycirc[green]\\
+\& (variable) \rightarrow \mycirc[blue] \\
+\par}\label{colors}
+
+The green zero is optionnal but really reduces the number of false positive at a minor cost.
+
+\section{ Taint checking cannot be sound and complete for address sensitive pointer detection}
+
+Let's first prove that a sound and complete taint checking algorithm requires a infinite number of colors:\\ \\
+There is an infinite number of reversible computations that can be applied to a pointer (cast to an integer or not). Let's consider multiplication for 
+example. Any multiplied pointer should should be marked dangerous. Still, since the operation is reversible, we need to be able to go back the ``sane color''.
+Thus, each ``dangerous'' color should also carry the set of operations that were applied to the pointer. Which means that each set of operations requires 
+its own color (which would be a ``dangerous'' color. The number of possible set of operations being inifinite, we need an infinite number of colors.
+\\ \\ 
+Example: (colors are defined in \ref{color})
+
+\begin{lstlisting}[ Reversible operation on a cast pointer , language=C]
+int* p;
+long c = (long) p; // c is blue  
+c = c*4 + 2; // c is red
+c = (c-2)/4; // c is blue again
+
+\end{lstlisting}\label{color}
+
+Now let's consider that we have a comparison between two values carrying two of these ``dangerous'' colors. We need to make sure that those colors are not 
+equivalent, because if it is, the result of the comparison would be a green value as shown in \ref{color}. In other words, we need to be able to check 
+if the two sets of operations that were applied to the pointers were equal or not. \\
+But according to Rice's theorem, it is not possible to compare the equality of two functions if the source set is infinite. Which is the case here since the 
+source set is the memory available (Actually finite but since the algorithm is not aware of the amount of memory, it is considered infinite).
+\\
+Taint checking cannot be sound and complete for address sensitive pointer detection.
+\\ \\
+More generally, the process of sensitive pointer detection requires to consider every possible pointer value since these values will differ in the 
+various variants. Run time analyses fix a set of input values which is reasonable since we will make sure that the program runs with a certain 
+set of input values. But ``fixing'' a pointer value for a run is not enough since in a MVEE, a run implies various pointer values.
+\\
+Thus, the only viable analysis is dynamic symbolic execution \cite{dynamic} 
+which can't be done on most programs due to the problem of path explosion.\\
+ 
+\section{Padded structures}
 \begin{lstlisting}[frame=single, caption=Writing a padded structure, label=lst:padstruct, language=C]
 struct padded_struct {
     char ch1; // 1 byte
@@ -422,11 +509,11 @@ int main(int argc, char *argv[]) {
     foo.i1 = 0;
     foo.i2 = 1;
     
-    printf("sizeof padded_struct is %ld\n", sizeof(foo)); 
+    printf("struct size:%ld\n", sizeof(foo)); 
       /* sizeof padded_struct is 12 */
     
     write(2, &foo, sizeof(foo));
-      /* Argument mismatch triggered if ASLR is enabled */
+      /* Argument mismatch w/ ASLR */
     return 0;
 }
 \end{lstlisting}\label{padded}

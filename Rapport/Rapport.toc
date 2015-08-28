@@ -18,10 +18,14 @@
 \contentsline {section}{\numberline {IV.1}The delta strategy}{21}{section.4.1}
 \contentsline {section}{\numberline {IV.2}Abstraction and cast back occurence analysis}{22}{section.4.2}
 \contentsline {section}{\numberline {IV.3}Taint checking}{23}{section.4.3}
+\contentsline {subsection}{\numberline {IV.3.1}Investigation on taint checking for MVEEs}{23}{subsection.4.3.1}
 \contentsline {section}{\numberline {IV.4}Function inserting tool}{24}{section.4.4}
-\contentsline {chapter}{\numberline {V}Planning of the internship}{25}{chapter.5}
-\contentsline {chapter}{Conclusion}{27}{chapter*.5}
-\contentsline {chapter}{List of Tables}{29}{chapter*.6}
-\contentsline {chapter}{List of Figures}{31}{chapter*.7}
-\contentsline {chapter}{Bibliography}{33}{chapter*.8}
-\contentsline {chapter}{Appendix}{35}{chapter*.9}
+\contentsline {chapter}{\numberline {V}Planning of the internship}{27}{chapter.5}
+\contentsline {chapter}{Conclusion}{29}{chapter*.5}
+\contentsline {chapter}{List of Tables}{31}{chapter*.6}
+\contentsline {chapter}{List of Figures}{33}{chapter*.7}
+\contentsline {chapter}{Bibliography}{35}{chapter*.8}
+\contentsline {chapter}{Appendix}{37}{chapter*.9}
+\contentsline {section}{\numberline {V.1}Three colored taint checking}{37}{section.5.1}
+\contentsline {section}{\numberline {V.2} Taint checking cannot be sound and complete for address sensitive pointer detection}{37}{section.5.2}
+\contentsline {section}{\numberline {V.3}Padded structures}{39}{section.5.3}

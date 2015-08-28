@@ -5,6 +5,11 @@ One Aleph.
 \newblock smashing the stack for fun and profit.
 \newblock 1996.
 
+\bibitem{dynamic}
+Patrice Godefroid Nikolai~Tillmann Anand, Saswat.
+\newblock Demand-driven compositional symbolic execution.
+\newblock 2008.
+
 \bibitem{DBLP:conf/eurosys/SalamatJGF09}
 Babak Salamat, Todd Jackson, Andreas Gal, and Michael Franz.
 \newblock Orchestra: intrusion detection using parallel execution and
