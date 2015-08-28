@@ -322,11 +322,11 @@ value and every variant's pointer will reference the same malicious code. \\
 
 The idea behing the delta strategy is the creation of a ``virtual'' memory that is shared between the variants. \\
 This can be generalized to every technique trying to inject a common integer value after a cast and we now know that we can't allow
-cast back for security reasons. \\ Before totally giving up on this idea, we wanted to know how often such pointer to integer cast are
+cast back for security reasons. \\ Before totally giving up on this idea, we wanted to know how often such pointer to integer casts are
 done. After all, if these are rare, it would still be possible to implement the delta strategy by slighlty modifying the original 
-program. We also had the belief that integer to pointer casts are rare.\\ 
+program. We also had the belief that integer to pointer casts were rare.\\ 
 To do so, we decided to create our own clang plugin. Clang is a compiler which is part of the LLVM project. The LLVM project as 
-the advantage of being pretty well documented and we already knew that creating a cast detection tool was highly doable. \\
+the advantage of being pretty well documented and we already knew that creating a cast detection tool was doable. \\
 Still, learning how to set up and use LLVM required a lot of effort. \\
 After a few days, we had a generic clang plugin that was capable of detecting any kind of cast. During the rest of the internship,
 we kept adding some features and modifications to this tool to make it more versatile ( error output, source file and line number of 
@@ -336,10 +336,9 @@ The delta strategy couldn't be applied that way, it required at least some relax
 
 \section{Taint checking}
 
-As to relax the whole idea of the delta strategy, we thought about not applying it to every cast. \\
+As to relax the whole idea of the delta strategy, we thought about not applying it to every single cast. \\
 We first wanted to apply it to every cast while giving the opportunity to the developper to manually disable it. But we could also do
-it the other way round. We were not sure which solution would be the best since we didn't know if the cast which proportion of the 
-could required the delta strategy. \\ Anyway, doing any of this solution and making the program crash until the programmer finds all
+it the other way round. We were not sure which solution would be the best since we were not aware of the proportion of dangerous pointer casts. \\ Anyway, doing any of this solution and making the program crash until the programmer finds all
 of the cast was not satisfactory.
 We wanted a tool that could detect wether or not a cast was causing addressing sensitivity. We found out that a cast pointer was
 address sensitive only if a variable affected by this cast was used in a condition or as an index.
@@ -351,15 +350,16 @@ Taint checkers are known to highly slow down the program but it wasn't such a pr
 adapt the program (the tool would only be used once to determine the address sensitive casts). The biggest problem was to find a good 
 taint checker. Implementing one was not an option since it is very complicated and time consuming. On the other hand, most taint 
 checkers were developed for a specific use and didn't fit our needs. We finally found out the valgrind's taint checker (taintgrind)
-allowed the user to manually taint its sources. Of course, manually tainting the source was not an option. But this is where our
+allowed the user to manually taint its sources. Of course, we wanted to avoid manually tainting the source. And this is where our
 clang plugin came in handy: We could compile our programs and notify every single cast, we would then just have to create a script 
-that would do some source to source compilation to add the tainting. Taintgrind outputing every single tainted instruction, we also had to write a script that detects the sink (a tainted variable used
+that would do some source to source compilation to add the tainting. Taintgrind outputing every single tainted instruction, we also had to write a script
+that detects the sinks (a tainted variable used
 in a condition or as an index) and traces back to the evil pointer cast. \\ \\
 
 \subsection{Investigation on taint checking for MVEEs}
 
 The source to source compilation was quite successful but still, any unusual syntax would imply some manual fix to have the
-program running. One could think that the reach of such a tool is very limited, but it appeared to be extremely interesting for our study.
+program running. One could think that the impact of such a tool is very limited, but it appeared to be extremely interesting for our study.
 We realized that even though our program is complete (It detects every dangerous pointer cast), it is not sound.
 A lot of false positive could be detected. For example casting two pointers to integer and checking wether they are equal is safe.
 Also, any pointer cast to an int then modified to be cast back as a valid pointer could trigger a warning.
@@ -375,11 +375,11 @@ a description of this model.
 
 \section{Function inserting tool}
 
-As my colleague was written a second report about the taint checking and delta strategy combination, I decided to develop another 
+As my colleague was writting a second report about the taint checking and delta strategy combination, I decided to develop another 
 LLVM tool. Once again, going through the LLVM documentation was challenging but in the end, I managed to write a new tool that could
-insert any function before any kind of cast or any other kind of instruction. \\ 
-The tool uses LLVM's intermediate representation to detect the cast and grab the cast value. Then, the tools inserts the function we
-want right before the cast. Of course, this function has to be compiled to the LLVM IR and linked to the main program we want to
+insert a function after any specific instruction (in our case, pointer to integer casts). \\ 
+The tool uses LLVM's intermediate representation to detect the cast and grab the cast value. Then, it inserts the function we
+want right after the cast. Of course, this function has to be compiled to the LLVM IR and linked to the main program we want to
 work on.
 This tool could now both apply the taint checking process and the last implementation of delta strategy we came up with.
 Stijn Volckaert, the developer of GHUMVEE advised us to normalize the pointers after a cast. \\ \\
@@ -416,8 +416,10 @@ taint checking model in MVEE. Writing of a internal technical report concerning 
 
 
 \partb{Conclusion}
-Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
 
+During this internship, we managed to define and give a comprehensive overview of address sensitivity. We then provided a theoretical solution to
+fix address sensitive behaviors by designing the delta strategy and an efficient taint checking algorithm. We implemented a few partial tools leading
+to the detection and fix of address sensitivity but the project to gather every tool is still 
 
 
 \afficheGlossaire

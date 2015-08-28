@@ -153,7 +153,7 @@ referenced by a specific cache \cite{warInMemory}. Thus, the attacker will overf
 
 In the MVEE threat model, we assume that the attacker has access to the source code, is able to read all of the memory layout through a leaking pointer and 
 can successfully develop a gadget (see \ref{ROP}).
-MVEEs consist in running various diversified variants of the same program in parallel \cite{DBLP:conf/eurosys/SalamatJGF09}. By this mean, if an attacker tries to developp
+MVEEs consist in running various diversified variants of the same program in parallel \cite{DBLP:conf/eurosys/SalamatJGF09}. By this mean, if an attacker tries to develop
 a buffer overflow attack, this attack will only work in one variant. To do so, the MVEE makes sure that the data layout is 
 different in every variant. Then, at runtime, a monitor checks every system call done by the variants, if they are not the same
 calls or if the arguments differ, the monitor instantly stops every variant and produces a report. \\
@@ -337,7 +337,7 @@ The delta strategy couldn't be applied that way, it required at least some relax
 \section{Taint checking}
 
 As to relax the whole idea of the delta strategy, we thought about not applying it to every single cast. \\
-We first wanted to apply it to every cast while giving the opportunity to the developper to manually disable it. But we could also do
+We first wanted to apply it to every cast while giving the opportunity to the developer to manually disable it. But we could also do
 it the other way round. We were not sure which solution would be the best since we were not aware of the proportion of dangerous pointer casts. \\ Anyway, doing any of this solution and making the program crash until the programmer finds all
 of the cast was not satisfactory.
 We wanted a tool that could detect wether or not a cast was causing addressing sensitivity. We found out that a cast pointer was
@@ -416,8 +416,16 @@ taint checking model in MVEE. Writing of a internal technical report concerning 
 
 
 \partb{Conclusion}
-Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla 
 
+During this internship, we managed to define and give a comprehensive overview of address sensitivity. We then provided a theoretical solution to
+fix address sensitive behaviors by designing the delta strategy and an efficient taint checking algorithm. We implemented a few partial tools leading
+to the detection and fix of address sensitivity but optimizing and gathering them in one tool still represents a huge amount of work.
+Still, a major step toward a common usage of MVEEs has been done. \\
+As for me, this intership strongly developed my skills and knowledge in various fields. First, I gained a very good insight into linux systems. I learnt
+a lot about system calls, user rights, how to patch a linux kernel, etc. \\ I also learnt about ruby scripting, LLVM tool development and C's library management.
+But more than anything, I apprehended research by spending a hufe amount of time with my colleague exposing ideas to ourself on the whiteboard. This 
+internship was also the opportunity to write two technical reports and I thank our tutor Dr Per Larsen for pushing us into perfecting our writing for days.\\
+Finally, I would say that working in the SSLAB confirmed my interest in research and will certainly influence my professional project.
 
 
 \afficheGlossaire
@@ -470,6 +478,9 @@ its own color (which would be a ``dangerous'' color. The number of possible set 
 \\ \\ 
 Example: (colors are defined in \ref{color})
 
+\begin{center}
+ 
+
 \begin{lstlisting}[ Reversible operation on a cast pointer , language=C]
 int* p;
 long c = (long) p; // c is blue  
@@ -477,12 +488,13 @@ c = c*4 + 2; // c is red
 c = (c-2)/4; // c is blue again
 
 \end{lstlisting}\label{color}
+\end{center}
 
-Now let's consider that we have a comparison between two values carrying two of these ``dangerous'' colors. We need to make sure that those colors are not 
+Now let's consider that we have a comparison between two values carrying two of those ``dangerous'' colors. We need to make sure that those colors are not 
 equivalent, because if it is, the result of the comparison would be a green value as shown in \ref{color}. In other words, we need to be able to check 
 if the two sets of operations that were applied to the pointers were equal or not. \\
 But according to Rice's theorem, it is not possible to compare the equality of two functions if the source set is infinite. Which is the case here since the 
-source set is the memory available (Actually finite but since the algorithm is not aware of the amount of memory, it is considered infinite).
+source set is the amount memory available (which is actually finite but since the algorithm is not aware of this amount, it has to be considered infinite).
 \\
 Taint checking cannot be sound and complete for address sensitive pointer detection.
 \\ \\
